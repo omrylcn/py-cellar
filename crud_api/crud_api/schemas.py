@@ -69,3 +69,55 @@ class UserUpdate(BaseModel):
                 "company_id": 1
             }
         }
+
+class UserDeviceDataCreate(BaseModel):
+    user_id: int = Field(..., description="The ID of the user", example=1)
+    device_unique_id: str = Field(..., description="The unique identifier of the device", example="1")
+    data: float = Field(..., description="The data recorded from the device", example=42.0)
+    created_user: Optional[str] = Field(None, description="The username of the user who created this entry", example="admin")
+    #updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "user_id": 1,
+                "device_unique_id": "1",
+                "data": 42.0,
+                "created_user": "admin",
+            }
+        }
+
+class UserDeviceDataUpdate(BaseModel):
+    user_id: Optional[int] = Field(None, description="The ID of the user", example=1)
+    device_unique_id: Optional[str] = Field(None, description="The unique identifier of the device", example="1")
+    data: Optional[float] = Field(None, description="The data recorded from the device", example=42.0)
+    updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "user_id": 1,
+                "device_unique_id": "1",
+                "data": 42.0,
+                "updated_user": "admin"
+            }
+        }
+
+
+# # schemas.py
+# from pydantic import BaseModel
+
+# class UserCreate(BaseModel):
+#     username: str
+#     password: str
+
+# class UserLogin(BaseModel):
+#     username: str
+#     password: str
+
+# class Token(BaseModel):
+#     access_token: str
+#     token_type: str
+
+# class TokenData(BaseModel):
+#     username: Optional[str] = None
