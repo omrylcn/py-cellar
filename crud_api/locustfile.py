@@ -1,4 +1,5 @@
 from locust import HttpUser, task, between
+import random
 
 class UserDeviceDataBehavior(HttpUser):
     wait_time = between(1, 5)  # Wait between 1 and 5 seconds between tasks
@@ -6,10 +7,10 @@ class UserDeviceDataBehavior(HttpUser):
     @task(2)  # Higher weight, more frequent execution
     def create_device_data(self):
         # Replace with the actual payload and endpoint
-        self.client.post("/api/v1/user_device_data/", json={
-            "user_id": 1,  # Example user ID
-            "device_id": "1",
-            "data": 42.0,
+        self.client.post("/api/v1/user-device-data/", json={
+            "user_id": int(random.randint(1,5)),  # Example user ID
+            "device_unique_id": str(1),  # Example device ID
+            "data": float(random.randint(0, 100)),
             "created_user": "admin"
             # Add other required fields
         })

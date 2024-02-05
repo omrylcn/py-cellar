@@ -17,7 +17,7 @@ async def get_user_device_data(user_device_data: UserDeviceDataCreate, db:AsyncS
         return JSONResponse(content={'message':'User Device Data created successfully!'}, status_code=201)
 
     except Exception as e:
-        raise
+        print(e)
         return JSONResponse({"message": f"Error! : {e}"}, status_code=500)
 
 
