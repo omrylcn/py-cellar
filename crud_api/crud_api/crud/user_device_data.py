@@ -12,11 +12,11 @@ class UserDeviceDataCRUD:
         values = data.dict()
     
         
-        values["created_date"] = datetime.utcnow()
-        values["updated_date"] = values["created_date"]
-        values["updated_user"] = values["created_user"]
+        values["created_date"] = datetime.now()
+        # values["updated_date"] = values["created_date"]
+        # values["updated_user"] = values["created_user"]
         device_data = UserDeviceData(**values)
-        print("new device data :",device_data)        
+        #print("new device data :",device_data)        
         self.session.add(device_data)
         await self.session.commit()
         await self.session.refresh(device_data)
