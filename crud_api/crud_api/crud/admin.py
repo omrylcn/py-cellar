@@ -43,3 +43,33 @@ class LoginCRUD:
         if not await verify_password(hashed_password, user.password):
             return user, "Incorrect password"
         return user, "User authenticated"
+
+
+class PasswordResetCRUD:
+    def __init__(self, session: AsyncSession):
+        self.session = session
+
+    async def get_user(self, username: str) -> Users:
+        statement = select(Users).where(Users.username == username)
+        results = await self.session.execute(statement=statement)
+        user = results.scalar_one_or_none()
+
+        return user
+
+    async def get_password_reset(self, token: UUID) -> Optional[Users]:
+        statement = select(Users).where(Users.reset_token == token)
+        results = await self.session.execute(statement=statement)
+        user = results.scalar_one_or_none()
+
+        return user
+
+    async def reset_password(self, token: UUID, new_password: str) -> Users:
+        user = await self.get_password_reset(token)
+        if user is None:
+            raise HTTPException(status_code=http_status.HTTP_404_NOT_FOUND, detail="Token not found")
+        user.password = hash_password(new_password)
+        user.reset_token = None
+        user.reset_token_expiration = None
+        user.updated_at = datetime.now()
+        await self.session.commit()
+        return user

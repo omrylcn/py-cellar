@@ -2,21 +2,22 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from typing import Optional
 from passlib.context import CryptContext
-from crud_api.config import ACCESS_TOKEN_EXPIRE_MINUTES
+from crud_api.config import ACCESS_TOKEN_EXPIRE_MINUTES,REST_PASSWORD_TOKEN_EXPIRE_MINUTES,SECRET_KEY,ALGORITHM
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 from crud_api.db import db_session
-from crud_api.crud.login import LoginCRUD
+from crud_api.crud.admin import LoginCRUD
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# These should be set as environment variables in a real application
-SECRET_KEY = "a very secret key"
-ALGORITHM = "HS256"
+# # These should be set as environment variables in a real application
+# SECRET_KEY = "a very secret key"
+# ALGORITHM = "HS256"
 # ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+reset_access_token_expires = timedelta(minutes=REST_PASSWORD_TOKEN_EXPIRE_MINUTES)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin/token")
 
 

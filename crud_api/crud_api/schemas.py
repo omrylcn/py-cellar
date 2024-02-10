@@ -15,8 +15,8 @@ class UserResponse(BaseModel):
     company_id: Optional[int] = Field(None, description="The company ID associated with the user", example=1)
 
     class Config:
-        orm_mode = True
-        schema_extra = {
+        from_attributes = True
+        json_schema_extra = {
             "example": {
                 "name": "John",
                 "surname": "Doe",
@@ -38,7 +38,7 @@ class UserCreate(BaseModel):
     company_id: Optional[int] = Field(None, description="The company ID associated with the user", example=1)
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "John",
                 "surname": "Doe",
@@ -59,7 +59,7 @@ class UserUpdate(BaseModel):
     company_id: Optional[int] = Field(None, description="The company ID associated with the user", example=1)
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "name": "John",
                 "surname": "Doe",
@@ -78,7 +78,7 @@ class UserDeviceDataCreate(BaseModel):
     #updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "user_id": 1,
                 "device_unique_id": "1",
@@ -94,7 +94,7 @@ class UserDeviceDataUpdate(BaseModel):
     updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
 
     class Config:
-        schema_extra = {
+        json_schema_extra = {
             "example": {
                 "user_id": 1,
                 "device_unique_id": "1",
