@@ -46,16 +46,16 @@ class Device(SQLModel,table=True):
     __tablename__ = "device"
     unique_id: str = Field(default=None, primary_key=True)
     manufacturer: str
-    created_date: datetime = Field(default_factory=datetime.utcnow)
+    created_date: datetime #= Field(default_factory=datetime.utcnow)
     created_user: str
-    updated_date: datetime = Field(default_factory=datetime.utcnow)
+    updated_date: datetime #= Field(default_factory=datetime.utcnow)
     updated_user: str
 
 class UserDevices(SQLModel,table=True):
     __tablename__ = "user_devices"
     id: int = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id")
-    device_id: str = Field(foreign_key="device.unique_id")
+    device_unique_id: str = Field(foreign_key="device.unique_id")
     created_date: datetime #= Field(default_factory=datetime.utcnow)
     created_user: str
     updated_date: datetime #= Field(default_factory=datetime.utcnow)
