@@ -39,7 +39,7 @@ class UsersCRUD:
         
         if user is None:
             return user
-        
+            
         values["updated_date"] = datetime.utcnow()
         
         for k, v in values.items():
