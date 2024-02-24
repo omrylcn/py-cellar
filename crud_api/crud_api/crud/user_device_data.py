@@ -10,7 +10,7 @@ class UserDeviceDataCRUD:
         self.session = session
 
     async def create(self, data: UserDeviceDataCreate) -> UserDeviceData:
-        values = data.model_dump()
+        values = data.model_dump(exclude_unset=True)
     
         
         values["created_date"] = datetime.now()
@@ -27,8 +27,8 @@ class UserDeviceDataCRUD:
     async def create_list(self, data: List[UserDeviceDataCreate]) -> bool:
         device_data_list = []
         for device_data in data:
-            values = device_data.model_dump()
-            values["created_date"] = datetime.now()
+            values = device_data.dict()#model_dump(exclude_unset=True)
+            #values["created_date"] = datetime.now()
             device_data = UserDeviceData(**values)
             self.session.add(device_data)
             device_data_list.append(device_data)

@@ -5,3 +5,4 @@ from crud_api.crud.user_devices import UserDevicesCRUD
 from crud_api.crud.roles import RolesCRUD
 from crud_api.crud.user_roles import UserRolesCRUD
 from crud_api.crud.company import CompanyCRUD
+from crud_api.crud.device import DeviceCRUD
