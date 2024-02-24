@@ -73,7 +73,7 @@ class UserDeviceDataCreate(BaseModel):
     user_id: int = Field(..., description="The ID of the user", example=1)
     device_unique_id: str = Field(..., description="The unique identifier of the device", example="1")
     data: str = Field(..., description="The data recorded from the device", example="[42.0, 43.0, 44.0]")
-    created_date: str = Field(..., description="The date the data was recorded", example="2021-01-01 00:00:00")
+    created_date: datetime = Field(..., description="The date the data was recorded", example="2021-01-01 00:00:00")
     data_type: int = Field(..., description="The type of data recorded", example=0)
     created_user: Optional[str] = Field(description="The username of the user who created this entry", example="admin")
     #updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
@@ -95,7 +95,7 @@ class UserDeviceDataUpdate(BaseModel):
     user_id: Optional[int] = Field(None, description="The ID of the user", example=1)
     device_unique_id: Optional[str] = Field(None, description="The unique identifier of the device", example="1")
     data: Optional[float] = Field(None, description="The data recorded from the device", example=42.0)
-    created_date: str = Field(..., description="The date the data was recorded", example="2021-01-01 00:00:00")
+    update_date: datetime = Field(..., description="The date the data was recorded", example="2021-01-01 00:00:00")
     data_type: int = Field(..., description="The type of data recorded", example=0)
     updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
 
@@ -216,6 +216,35 @@ class CompanyUpdate(BaseModel):
             "example": {
                 "company_name": "ACME",
                 "is_active": True,
+                "updated_user": "admin"
+            }
+        }
+
+
+class DeviceCreate(BaseModel):
+    unique_id: str = Field(..., description="The unique identifier of the device", example="1")
+    manufacturer: str = Field(..., description="The manufacturer of the device", example="ACME")
+    created_user: Optional[str] = Field(None, description="The username of the creator", example="admin")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "unique_id": "1",
+                "manufacturer": "ACME",
+                "created_user": "admin"
+            }
+        }
+
+class DeviceUpdate(BaseModel):
+    unique_id: Optional[str] = Field(None, description="The unique identifier of the device", example="1")
+    manufacturer: Optional[str] = Field(None, description="The manufacturer of the device", example="ACME")
+    updated_user: Optional[str] = Field(None, description="The username of the last updater", example="admin")
+
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "unique_id": "1",
+                "manufacturer": "ACME",
                 "updated_user": "admin"
             }
         }

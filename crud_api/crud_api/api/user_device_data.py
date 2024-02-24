@@ -5,14 +5,15 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from crud_api.schemas import UserDeviceDataCreate, UserDeviceDataUpdate
 from crud_api.crud import UserDeviceDataCRUD
 from typing import List
-
+from crud_api.secure import get_current_user
 
 user_device_data_router = APIRouter()
 
 
 @user_device_data_router.post("/")
-async def get_user_device_data(user_device_data: List[UserDeviceDataCreate], db: AsyncSession = Depends(db_session)):
+async def get_user_device_data(user_device_data: List[UserDeviceDataCreate], db: AsyncSession = Depends(db_session),current_username: str = Depends(get_current_user)):
     print(len(user_device_data))
+    #print(user_device_data[0])
     # return JSONResponse(content={'message':'User Device Data created successfully!'}, status_code=201)
 
     try:
@@ -27,7 +28,7 @@ async def get_user_device_data(user_device_data: List[UserDeviceDataCreate], db:
 
 
 @user_device_data_router.get("/{data_id}")
-async def get_user_device_data(data_id: int, db: AsyncSession = Depends(db_session)):
+async def get_user_device_data(data_id: int, db: AsyncSession = Depends(db_session),current_username: str = Depends(get_current_user)):
     try:
         crud = UserDeviceDataCRUD(session=db)
         user_device_data = await crud.get(data_id=data_id)

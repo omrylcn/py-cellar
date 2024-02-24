@@ -13,7 +13,7 @@ ssl._create_default_https_context = ssl._create_unverified_context
 # templates_folder = os.path.join(dirname, '../templates')
 logger = logging.getLogger("uvicorn")
 
-print(SENDER_EMAIL, SENDER_EMAIL_PASSWORD)
+
 conf = ConnectionConfig(
     MAIL_USERNAME = "omrylcn",
     MAIL_PASSWORD = SENDER_EMAIL_PASSWORD,

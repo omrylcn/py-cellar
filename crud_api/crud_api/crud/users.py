@@ -15,8 +15,8 @@ class UsersCRUD:
         self.session = session
 
     async def create(self, data: UserCreate) -> Users:
-        values = data.dict()
-        values["created_date"] = datetime.utcnow()
+        values = data.model_dump()
+        values["created_date"] = datetime.now()
         values["password"] = hash_password(values["password"])
         user = Users(**values)
         # print("new user :",user)
