@@ -17,9 +17,9 @@ class Users(SQLModel, table=True):
 class Roles(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     role_name: str
-    created_date: datetime = Field(default_factory=datetime.utcnow)
+    created_date: datetime #= Field(default_factory=datetime.utcnow)
     created_user: str
-    updated_date: datetime = Field(default_factory=datetime.utcnow)
+    updated_date: datetime #= Field(default_factory=datetime.utcnow)
     updated_user: str
 
 class UserRoles(SQLModel,table=True):
@@ -27,9 +27,9 @@ class UserRoles(SQLModel,table=True):
     id: int = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id")
     role_id: int = Field(foreign_key="roles.id")
-    created_date: datetime = Field(default_factory=datetime.utcnow)
+    created_date: datetime #= Field(default_factory=datetime.utcnow)
     created_user: str
-    updated_date: datetime = Field(default_factory=datetime.utcnow)
+    updated_date: datetime #= Field(default_factory=datetime.utcnow)
     updated_user: str
 
 class Company(SQLModel, table=True):
@@ -37,9 +37,9 @@ class Company(SQLModel, table=True):
     id: int = Field(default=None, primary_key=True)
     company_name: str
     is_active: bool
-    created_date: datetime = Field(default_factory=datetime.utcnow)
+    created_date: datetime #= Field(default_factory=datetime.utcnow)
     created_user: str
-    updated_date: datetime = Field(default_factory=datetime.utcnow)
+    updated_date: datetime #= Field(default_factory=datetime.utcnow)
     updated_user: str
 
 class Device(SQLModel,table=True):
@@ -66,7 +66,8 @@ class UserDeviceData(SQLModel,table=True):
     id: int = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="users.id")
     device_unique_id: str = Field(foreign_key="device.unique_id")
-    data: float
+    data: str #float
+    data_type: int
     created_date: datetime # = Field(default_factory=datetime.utcnow)
     created_user: str
     updated_date: datetime #= Field(default_factory=datetime.utcnow)

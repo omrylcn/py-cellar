@@ -28,7 +28,6 @@ class UserResponse(BaseModel):
             }
         }
 
-
 class UserCreate(BaseModel):
     name: str = Field(..., description="The user's name", example="John")
     surname: str = Field(..., description="The user's surname", example="Doe")
@@ -73,8 +72,10 @@ class UserUpdate(BaseModel):
 class UserDeviceDataCreate(BaseModel):
     user_id: int = Field(..., description="The ID of the user", example=1)
     device_unique_id: str = Field(..., description="The unique identifier of the device", example="1")
-    data: float = Field(..., description="The data recorded from the device", example=42.0)
-    created_user: Optional[str] = Field(None, description="The username of the user who created this entry", example="admin")
+    data: str = Field(..., description="The data recorded from the device", example="[42.0, 43.0, 44.0]")
+    created_date: str = Field(..., description="The date the data was recorded", example="2021-01-01 00:00:00")
+    data_type: int = Field(..., description="The type of data recorded", example=0)
+    created_user: Optional[str] = Field(description="The username of the user who created this entry", example="admin")
     #updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
 
     class Config:
@@ -82,8 +83,11 @@ class UserDeviceDataCreate(BaseModel):
             "example": {
                 "user_id": 1,
                 "device_unique_id": "1",
-                "data": 42.0,
+                "data": "42.0",
+                "created_date": "2021-01-01 00:00:00",
+                "data_type": 0,
                 "created_user": "admin",
+                
             }
         }
 
@@ -91,6 +95,8 @@ class UserDeviceDataUpdate(BaseModel):
     user_id: Optional[int] = Field(None, description="The ID of the user", example=1)
     device_unique_id: Optional[str] = Field(None, description="The unique identifier of the device", example="1")
     data: Optional[float] = Field(None, description="The data recorded from the device", example=42.0)
+    created_date: str = Field(..., description="The date the data was recorded", example="2021-01-01 00:00:00")
+    data_type: int = Field(..., description="The type of data recorded", example=0)
     updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
 
     class Config:
@@ -98,11 +104,12 @@ class UserDeviceDataUpdate(BaseModel):
             "example": {
                 "user_id": 1,
                 "device_unique_id": "1",
-                "data": 42.0,
+                "data": "42.0",
+                "data_type": 1,
+                "updated_date": "2021-01-01 00:00:00",
                 "updated_user": "admin"
             }
         }
-
 
 class UserDevicesCreate(BaseModel):
     user_id: int = Field(..., description="The ID of the user", example=1)
@@ -144,6 +151,7 @@ class RolesCreate(BaseModel):
                 "created_user": "admin"
             }
         }
+
 class RolesUpdate(BaseModel):
     role_name: Optional[str] = Field(None, description="The name of the role", example="admin")
     updated_user: Optional[str] = Field(None, description="The username of the last updater", example="admin")
@@ -169,6 +177,7 @@ class UserRolesCreate(BaseModel):
                 "created_user": "admin"
             }
         }
+
 class UserRolesUpdate(BaseModel):
     user_id: Optional[int] = Field(None, description="The ID of the user", example=1)
     role_id: Optional[int] = Field(None, description="The ID of the role", example=1)

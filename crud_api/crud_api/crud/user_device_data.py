@@ -1,3 +1,4 @@
+from typing import List
 from datetime import datetime
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select, delete
@@ -9,7 +10,7 @@ class UserDeviceDataCRUD:
         self.session = session
 
     async def create(self, data: UserDeviceDataCreate) -> UserDeviceData:
-        values = data.dict()
+        values = data.model_dump()
     
         
         values["created_date"] = datetime.now()
@@ -22,6 +23,17 @@ class UserDeviceDataCRUD:
         await self.session.refresh(device_data)
         
         return device_data
+    
+    async def create_list(self, data: List[UserDeviceDataCreate]) -> bool:
+        device_data_list = []
+        for device_data in data:
+            values = device_data.model_dump()
+            values["created_date"] = datetime.now()
+            device_data = UserDeviceData(**values)
+            self.session.add(device_data)
+            device_data_list.append(device_data)
+        await self.session.commit()
+        return True
 
     async def get(self, data_id: int) -> UserDeviceData:
         statement = select(UserDeviceData).where(UserDeviceData.id == data_id)
@@ -47,6 +59,6 @@ class UserDeviceDataCRUD:
 
     async def delete(self, data_id: int) -> bool:
         statement = delete(UserDeviceData).where(UserDeviceData.id == data_id)
-        await self.session.execute(statement)
+        await self.session.exec(statement)
         await self.session.commit()
         return True
