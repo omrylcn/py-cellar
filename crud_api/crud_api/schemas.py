@@ -69,7 +69,7 @@ class UserUpdate(BaseModel):
             }
         }
 
-class UserDeviceDataCreate(BaseModel):
+class UserDataCreate(BaseModel):
     user_id: int = Field(..., description="The ID of the user", example=1)
     device_unique_id: str = Field(..., description="The unique identifier of the device", example="1")
     data: str = Field(..., description="The data recorded from the device", example="[42.0, 43.0, 44.0]")
@@ -91,7 +91,7 @@ class UserDeviceDataCreate(BaseModel):
             }
         }
 
-class UserDeviceDataUpdate(BaseModel):
+class UserDataUpdate(BaseModel):
     user_id: Optional[int] = Field(None, description="The ID of the user", example=1)
     device_unique_id: Optional[str] = Field(None, description="The unique identifier of the device", example="1")
     data: Optional[float] = Field(None, description="The data recorded from the device", example=42.0)
@@ -110,159 +110,3 @@ class UserDeviceDataUpdate(BaseModel):
                 "updated_user": "admin"
             }
         }
-
-class UserDevicesCreate(BaseModel):
-    user_id: int = Field(..., description="The ID of the user", example=1)
-    device_unique_id: str = Field(..., description="The unique identifier of the device", example="1")
-    created_user: Optional[str] = Field(None, description="The username of the user who created this entry", example="admin")
-    #updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "user_id": 1,
-                "device_unique_id": "1",
-                "created_user": "admin",
-            }
-        }
-
-class UserDevicesUpdate(BaseModel):
-    user_id: Optional[int] = Field(None, description="The ID of the user", example=1)
-    device_unique_id: Optional[str] = Field(None, description="The unique identifier of the device", example="1")
-    updated_user: Optional[str] = Field(None, description="The username of the user who last updated this entry", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "user_id": 1,
-                "device_unique_id": "1",
-                "updated_user": "admin"
-            }
-        }
-
-class RolesCreate(BaseModel):
-    role_name: str = Field(..., description="The name of the role", example="admin")
-    created_user: Optional[str] = Field(None, description="The username of the creator", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "role_name": "admin",
-                "created_user": "admin"
-            }
-        }
-
-class RolesUpdate(BaseModel):
-    role_name: Optional[str] = Field(None, description="The name of the role", example="admin")
-    updated_user: Optional[str] = Field(None, description="The username of the last updater", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "role_name": "admin",
-                "updated_user": "admin"
-            }
-        }
-
-class UserRolesCreate(BaseModel):
-    user_id: int = Field(..., description="The ID of the user", example=1)
-    role_id: int = Field(..., description="The ID of the role", example=1)
-    created_user: Optional[str] = Field(None, description="The username of the creator", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "user_id": 1,
-                "role_id": 1,
-                "created_user": "admin"
-            }
-        }
-
-class UserRolesUpdate(BaseModel):
-    user_id: Optional[int] = Field(None, description="The ID of the user", example=1)
-    role_id: Optional[int] = Field(None, description="The ID of the role", example=1)
-    updated_user: Optional[str] = Field(None, description="The username of the last updater", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "user_id": 1,
-                "role_id": 1,
-                "updated_user": "admin"
-            }
-        }
-
-class CompanyCreate(BaseModel):
-    company_name: str = Field(..., description="The name of the company", example="ACME")
-    is_active: bool = Field(..., description="The company's active status", example=True)
-    created_user: Optional[str] = Field(None, description="The username of the creator", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "company_name": "ACME",
-                "is_active": True,
-                "created_user": "admin"
-            }
-        }
-
-class CompanyUpdate(BaseModel):
-    company_name: Optional[str] = Field(None, description="The name of the company", example="ACME")
-    is_active: Optional[bool] = Field(None, description="The company's active status", example=True)
-    updated_user: Optional[str] = Field(None, description="The username of the last updater", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "company_name": "ACME",
-                "is_active": True,
-                "updated_user": "admin"
-            }
-        }
-
-
-class DeviceCreate(BaseModel):
-    unique_id: str = Field(..., description="The unique identifier of the device", example="1")
-    manufacturer: str = Field(..., description="The manufacturer of the device", example="ACME")
-    created_user: Optional[str] = Field(None, description="The username of the creator", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "unique_id": "1",
-                "manufacturer": "ACME",
-                "created_user": "admin"
-            }
-        }
-
-class DeviceUpdate(BaseModel):
-    unique_id: Optional[str] = Field(None, description="The unique identifier of the device", example="1")
-    manufacturer: Optional[str] = Field(None, description="The manufacturer of the device", example="ACME")
-    updated_user: Optional[str] = Field(None, description="The username of the last updater", example="admin")
-
-    class Config:
-        json_schema_extra = {
-            "example": {
-                "unique_id": "1",
-                "manufacturer": "ACME",
-                "updated_user": "admin"
-            }
-        }
-
-# # schemas.py
-# from pydantic import BaseModel
-
-# class UserCreate(BaseModel):
-#     username: str
-#     password: str
-
-# class UserLogin(BaseModel):
-#     username: str
-#     password: str
-
-# class Token(BaseModel):
-#     access_token: str
-#     token_type: str
-
-# class TokenData(BaseModel):
-#     username: Optional[str] = None
