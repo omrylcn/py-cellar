@@ -1,22 +1,33 @@
-import uvicorn
 from fastapi import FastAPI
-from crud_api.routers import api_v1_router,admin_router
+from fastapi.responses import HTMLResponse
+
+from crud_api.routers import api_v1_router, admin_router
 from crud_api.config import API_V1_PREFIX
 
 app = FastAPI(
-    title="invamar API",
-
+    title="CRUD API",
 )
 
 
-@app.get("/")
+html_content = """
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>CRUD API</title>
+    </head>
+    <body>
+        <h1>CRUD API</h1>
+        <p>Welcome to the 'CRUD API Template'. This is a API that allows you to manage your inventory.</p>
+        <p>Click <a href="/docs">here</a> to view the API documentation.</p>
+    </body>
+</html>
+"""
+
+
+@app.get("/", tags=["root"])
 async def root():
-    return {"message": "Hello World"}
+    return HTMLResponse(content=html_content, status_code=200)
+
 
 app.include_router(api_v1_router, prefix=API_V1_PREFIX)
 app.include_router(admin_router)
-
-
-
-# if __name__ == '__main__':
-#     uvicorn.run("app:app", port=8080, host="0.0.0.0", reload=True)

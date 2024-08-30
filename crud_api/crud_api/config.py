@@ -13,5 +13,3 @@ SECRET_KEY = config.secret_key
 ALGORITHM = config.jwt_algorithm
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 REST_PASSWORD_TOKEN_EXPIRE_MINUTES = 10
-SENDER_EMAIL = config.sender_email
-SENDER_EMAIL_PASSWORD = config.email_password

@@ -2,10 +2,11 @@ from datetime import datetime, timedelta
 from jose import JWTError, jwt
 from typing import Optional
 from passlib.context import CryptContext
-from crud_api.config import ACCESS_TOKEN_EXPIRE_MINUTES,REST_PASSWORD_TOKEN_EXPIRE_MINUTES,SECRET_KEY,ALGORITHM
 from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
+
+from crud_api.config import ACCESS_TOKEN_EXPIRE_MINUTES,REST_PASSWORD_TOKEN_EXPIRE_MINUTES,SECRET_KEY,ALGORITHM
 from crud_api.db import db_session
 from crud_api.crud.admin import LoginCRUD
 
