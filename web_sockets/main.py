@@ -7,34 +7,51 @@ import time
 
 app = FastAPI()
 
+# @app.websocket("/ws")
+# async def websocket_endpoint(websocket: WebSocket):
+#     await websocket.accept()
+#     try:
+#         while True:
+#             data = await websocket.receive_text()
+#             print('data',data)
+            
+#             if data == 'start':
+#                 while True:
+#                     try:
+#                         stop_signal = await asyncio.wait_for(websocket.receive_text(), timeout=0.0001)
+#                         if stop_signal == 'stop':
+#                             break
+#                     except asyncio.TimeoutError:
+#                         pass
+                    
+#                     # Generate 512 samples at 512 Hz
+#                     random_array = create_data_samples(sample_rate=512, duration_seconds=1)
+#                     print(len(random_array), datetime.now())
+#                     await websocket.send_text(json.dumps(random_array))
+
+#             elif data == 'show':
+#                 random_array = await create_data_samples(sample_rate=512, duration_seconds=1)
+#                 await websocket.send_text(json.dumps(random_array))
+
+#     except WebSocketDisconnect:
+#         print("Client disconnected")
+
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     try:
         while True:
             data = await websocket.receive_text()
-            print('data',data)
-            
-            if data == 'start':
-                while True:
-                    try:
-                        stop_signal = await asyncio.wait_for(websocket.receive_text(), timeout=0.0001)
-                        if stop_signal == 'stop':
-                            break
-                    except asyncio.TimeoutError:
-                        pass
-                    
-                    # Generate 512 samples at 512 Hz
-                    random_array = create_data_samples(sample_rate=512, duration_seconds=1)
-                    print(len(random_array), datetime.now())
-                    await websocket.send_text(json.dumps(random_array))
+            await websocket.send_text(f"Message text was: {data}")
 
-            elif data == 'show':
-                random_array = await create_data_samples(sample_rate=512, duration_seconds=1)
-                await websocket.send_text(json.dumps(random_array))
 
     except WebSocketDisconnect:
         print("Client disconnected")
+
+        
+@app.get("/")   
+async def index():
+    return {"message": "Hello Baris"}
 
 def create_data_samples(sample_rate, duration_seconds):
     """

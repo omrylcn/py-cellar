@@ -1,4 +1,6 @@
 config.yaml
+py-cellar/.vscode
+web_sockets
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
