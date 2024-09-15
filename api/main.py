@@ -11,5 +11,5 @@ parser.add_argument('--reload', type=bool, default=False, help='reload the serve
 args = parser.parse_args()
 
 if __name__ == '__main__':
-    uvicorn.run("crud_api.app:app", port=args.port,host=args.host,reload=args.reload)
+    uvicorn.run("api.app:app", port=args.port,host=args.host,reload=args.reload)
 
