@@ -8,7 +8,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 async_engine = create_async_engine(DB_ASYNC_CONNECTION_STR, echo=DB_ECHO, future=True)
 
 
-async def db_session() -> AsyncGenerator:
+async def db_session(async_engine=async_engine) -> AsyncGenerator:
     async_session = sessionmaker(
         bind=async_engine,
         class_=AsyncSession,
