@@ -1,15 +1,26 @@
 import omegaconf
+from dotenv import dotenv_values
+import os
 
-config = omegaconf.OmegaConf.load("config.yaml")
+def load_config(env="dev"):
+    public_config = omegaconf.OmegaConf.load("config.yaml")
 
+    env_file = ".env.test" if env == "test" else ".env"
+    secret_config = omegaconf.DictConfig(dotenv_values(env_file))
 
-API_V1_PREFIX = "/api/v1"
-# db_connection_string = "postgresql://admin:admin123@localhost:5432/invamar"
-DB_ASYNC_CONNECTION_STR=config.db_connection_string#"postgresql+asyncpg://admin:admin123@localhost:5432/invamar"#"postgresql+asyncpg://hero:heroPass123@0.0.0.0:5436/heroes_db"
-DB_ECHO = False
+    config = omegaconf.OmegaConf.merge(public_config, secret_config)
 
-# secure.py
+    return config
+
+# Load the appropriate config based on the FASTAPI_ENV environment variable
+config = load_config(os.getenv("FASTAPI_ENV", "dev"))
+
+API_V1_PREFIX = config.api_v1_prefix
+DB_ASYNC_CONNECTION_STR = config.db_async_connection_string
 SECRET_KEY = config.secret_key
 ALGORITHM = config.jwt_algorithm
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
-REST_PASSWORD_TOKEN_EXPIRE_MINUTES = 10
+ACCESS_TOKEN_EXPIRE_MINUTES = config.access_token_expire_minutes
+DB_ECHO = config.db_echo
+
+
+
