@@ -6,19 +6,14 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from api.config import ACCESS_TOKEN_EXPIRE_MINUTES,REST_PASSWORD_TOKEN_EXPIRE_MINUTES,SECRET_KEY,ALGORITHM
+from api.config import ACCESS_TOKEN_EXPIRE_MINUTES,SECRET_KEY,ALGORITHM
 from api.db import db_session
 from api.crud.admin import LoginCRUD
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-# # These should be set as environment variables in a real application
-# SECRET_KEY = "a very secret key"
-# ALGORITHM = "HS256"
-# ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
-reset_access_token_expires = timedelta(minutes=REST_PASSWORD_TOKEN_EXPIRE_MINUTES)
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="admin/token")
 
 
