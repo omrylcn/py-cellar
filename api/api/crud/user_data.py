@@ -2,8 +2,8 @@ from typing import List
 from datetime import datetime
 from sqlmodel.ext.asyncio.session import AsyncSession
 from sqlmodel import select, delete
-from crud_api.models import UserData  # Update import path as needed
-from crud_api.schemas import UserDataCreate, UserDataUpdate  # Define these schemas based on your model
+from api.models import UserData  # Update import path as needed
+from api.schemas import UserDataCreate, UserDataUpdate  # Define these schemas based on your model
 
 class UserDataCRUD:
     def __init__(self, session: AsyncSession):

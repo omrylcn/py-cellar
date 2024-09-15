@@ -6,9 +6,9 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from crud_api.config import ACCESS_TOKEN_EXPIRE_MINUTES,REST_PASSWORD_TOKEN_EXPIRE_MINUTES,SECRET_KEY,ALGORITHM
-from crud_api.db import db_session
-from crud_api.crud.admin import LoginCRUD
+from api.config import ACCESS_TOKEN_EXPIRE_MINUTES,REST_PASSWORD_TOKEN_EXPIRE_MINUTES,SECRET_KEY,ALGORITHM
+from api.db import db_session
+from api.crud.admin import LoginCRUD
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 

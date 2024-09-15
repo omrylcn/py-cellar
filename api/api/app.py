@@ -1,8 +1,8 @@
 from fastapi import FastAPI
 from fastapi.responses import HTMLResponse
 
-from crud_api.routers import api_v1_router, admin_router
-from crud_api.config import API_V1_PREFIX
+from api.routers import api_v1_router, admin_router
+from api.config import API_V1_PREFIX
 
 app = FastAPI(
     title="CRUD API",

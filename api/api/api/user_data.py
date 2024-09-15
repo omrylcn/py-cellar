@@ -1,10 +1,10 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import List
-from crud_api.db import db_session
-from crud_api.schemas import UserDataCreate,UserDataResponse
-from crud_api.crud import UserDataCRUD
-from crud_api.secure import get_current_user
+from api.db import db_session
+from api.schemas import UserDataCreate,UserDataResponse
+from api.crud import UserDataCRUD
+from api.secure import get_current_user
 
 user_data_router = APIRouter()
 

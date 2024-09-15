@@ -1,6 +1,6 @@
 from typing import AsyncGenerator
 
-from crud_api.config import DB_ASYNC_CONNECTION_STR,DB_ECHO
+from api.config import DB_ASYNC_CONNECTION_STR,DB_ECHO
 from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import sessionmaker
 from sqlmodel.ext.asyncio.session import AsyncSession

@@ -1,6 +1,6 @@
 import uvicorn
 from argparse import ArgumentParser
-from crud_api.app import app
+from api.app import app
 
 parser = ArgumentParser()
 

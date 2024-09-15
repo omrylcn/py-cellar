@@ -1,9 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
-from crud_api.db import db_session
-from crud_api.crud import LoginCRUD
-from crud_api.secure import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
+from api.db import db_session
+from api.crud import LoginCRUD
+from api.secure import create_access_token, ACCESS_TOKEN_EXPIRE_MINUTES
 
 admin_router = APIRouter()
 

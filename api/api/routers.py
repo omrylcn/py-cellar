@@ -1,7 +1,7 @@
 from fastapi import APIRouter
-from crud_api.api import users_router
-from crud_api.api import user_data_router
-from crud_api.api import admin_router as admin
+from api.api import users_router
+from api.api import user_data_router
+from api.api import admin_router as admin
 
 
 # version 1

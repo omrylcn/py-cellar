@@ -5,7 +5,7 @@ from datetime import datetime
 from fastapi import HTTPException, status as http_status
 from sqlalchemy import delete, select
 from sqlmodel.ext.asyncio.session import AsyncSession
-from crud_api.models import Users  # Update these imports according to your project structure
+from api.models import Users  # Update these imports according to your project structure
 from passlib.context import CryptContext
 
 
