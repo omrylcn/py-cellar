@@ -6,19 +6,18 @@ from fastapi import HTTPException, status as http_status
 from sqlalchemy import delete, select
 from sqlmodel.ext.asyncio.session import AsyncSession
 from api.models import Users  # Update these imports according to your project structure
-from passlib.context import CryptContext
+from api.util import hash_password,verify_password
+# from passlib.context import CryptContext
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+# # pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
-def hash_password(password: str) -> str:
-    """
-    Hash a password for storing.
-    """
-    return pwd_context.hash(password)
+# # def hash_password(password: str) -> str:
+# #     """
+# #     Hash a password for storing.
+# #     """
+# #     return pwd_context.hash(password)
 
-async def verify_password(plain_password: str, hashed_password: str) -> bool:
-        return pwd_context.verify(plain_password, hashed_password)
 
 
 class LoginCRUD:
@@ -40,7 +39,7 @@ class LoginCRUD:
         # print(user.password)
         if user is None:
             return user, "User not found"
-        if not await verify_password(hashed_password, user.password):
+        if not verify_password(hashed_password, user.password):
             return user, "Incorrect password"
         return user, "User authenticated"
 

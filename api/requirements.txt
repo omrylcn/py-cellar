@@ -9,3 +9,6 @@ uvicorn==0.20.0
 bcrypt==4.1.2
 asyncpg==0.29.0
 python-multipart==0.0.7
+psycopg2-binary==2.9.9
+SQLAlchemy-Utils==0.41.2
+python-dotenv==1.0.1

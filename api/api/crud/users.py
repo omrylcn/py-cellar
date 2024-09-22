@@ -5,7 +5,7 @@ from sqlmodel.ext.asyncio.session import AsyncSession
 
 from api.schemas import UserCreate, UserUpdate
 from api.models import Users
-from api.secure import hash_password
+from api.util import hash_password
 
 
 class UsersCRUD:

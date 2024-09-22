@@ -9,6 +9,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from api.config import ACCESS_TOKEN_EXPIRE_MINUTES,SECRET_KEY,ALGORITHM
 from api.db import db_session
 from api.crud.admin import LoginCRUD
+from api.util import hash_password,verify_password
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -28,15 +29,15 @@ def create_access_token(data: dict, expires_delta: Optional[timedelta] = access_
     return encoded_jwt
 
 
-def hash_password(password: str) -> str:
-    """
-    Hash a password for storing.
-    """
-    return pwd_context.hash(password)
+# def hash_password(password: str) -> str:
+#     """
+#     Hash a password for storing.
+#     """
+#     return pwd_context.hash(password)
 
 
-async def verify_password(plain_password: str, hashed_password: str) -> bool:
-    return pwd_context.verify(plain_password, hashed_password)
+# async def verify_password(plain_password: str, hashed_password: str) -> bool:
+#     return pwd_context.verify(plain_password, hashed_password)
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme), sess: AsyncSession = Depends(db_session)):

@@ -9,7 +9,7 @@ from sqlalchemy.exc import OperationalError
 from sqlalchemy_utils import database_exists, create_database
 
 from api.config import DB_SYNC_CONNECTION_STR, DB_ECHO
-from api.models import Users
+from api.models import Users,UserData
 from api.secure import hash_password
 
 # Create test database URL
@@ -62,11 +62,39 @@ def create_test_user(db_session: Session) -> Users:
         surname="User",
         username="testuser",
         password=hash_password("testpassword"),
-        created_date=datetime.utcnow(),
+        created_date=datetime.now(),
         created_user="system",
-        updated_date=datetime.utcnow(),
+        updated_date=datetime.now(),
         updated_user="system"
     )
     return user
 
+@pytest.fixture(scope="function")
+def existing_user(db_session: Session) -> Users:
+    user = Users(
+        name="Test",
+        surname="User",
+        username="testuser",
+        password=hash_password("testpassword"),
+        created_date=datetime.now(),
+        created_user="system",
+        updated_date=datetime.now(),
+        updated_user="system"
+    )
+    db_session.add(user)
+    db_session.commit()
+    return user
 
+@pytest.fixture(scope="function")
+def create_test_user_data(db_session: Session,existing_user:Users) -> UserData:
+    user_id = existing_user.id
+    
+    user_data = UserData(
+        user_id=user_id,
+        data = "Test data"
+        data_type=0,
+        created_date=datetime.now(),
+        created_user="system",
+    )
+
+    return user_data
