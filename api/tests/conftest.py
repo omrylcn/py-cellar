@@ -1,66 +1,72 @@
-
+# conftest.py
 from datetime import datetime
 import pytest
-from typing import AsyncGenerator
-from fastapi.testclient import TestClient
-from httpx import AsyncClient
+from sqlmodel import SQLModel, Session
+from sqlalchemy import create_engine, Engine
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy.engine.url import make_url
+from sqlalchemy.exc import OperationalError
+from sqlalchemy_utils import database_exists, create_database
 
-
-from api.db import db_session
-from api.app import app
-from api.config import DB_ASYNC_CONNECTION_STR
+from api.config import DB_SYNC_CONNECTION_STR, DB_ECHO
 from api.models import Users
 from api.secure import hash_password
 
-import asyncio
-from sqlmodel import SQLModel
-from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession,AsyncConnection
-from sqlalchemy.orm import sessionmaker
-from sqlalchemy.engine.url import make_url
-from sqlalchemy.ext.asyncio import create_async_engine
-from sqlalchemy.engine.url import make_url
-from api.config import DB_ASYNC_CONNECTION_STR ,DB_ECHO
-
-url = make_url(DB_ASYNC_CONNECTION_STR)
-TEST_DB_ASYNC_CONNECTION_STR = url #url.set(database="test_" + url.database)
-
-# Import your database configuration
-engine = create_async_engine(TEST_DB_ASYNC_CONNECTION_STR, echo=DB_ECHO)
-
+# Create test database URL
+# sync_url = make_url(DB_SYNC_CONNECTION_STR)
+TEST_DB_SYNC_CONNECTION_STR =  DB_SYNC_CONNECTION_STR
 
 @pytest.fixture(scope="session")
-def test_engine():
-    engine = create_async_engine(TEST_DB_ASYNC_CONNECTION_STR, echo=DB_ECHO)
+def test_engine() -> Engine:
+   # url = make_url(TEST_DB_SYNC_CONNECTION_STR)
+    
+    # Create database if it doesn't exist
+    if not database_exists(TEST_DB_SYNC_CONNECTION_STR):
+        create_database(TEST_DB_SYNC_CONNECTION_STR)
+    
+    engine = create_engine(TEST_DB_SYNC_CONNECTION_STR, echo=DB_ECHO)
+    
+    # Verify connection
+    try:
+        with engine.connect() as conn:
+            pass
+    except OperationalError:
+        pytest.fail(f"Could not connect to the test database: {TEST_DB_SYNC_CONNECTION_STR}")
+
     yield engine
-    engine.dispose()
 
+    SQLModel.metadata.drop_all(engine)
 
-async def create_db_and_tables(engine):
-    async with engine.begin() as conn:
-        #await conn.run_sync(SQLModel.metadata.drop_all)
-        await conn.run_sync(SQLModel.metadata.create_all)
-        
+@pytest.fixture(scope="session", autouse=True)
+def create_tables(test_engine: Engine):
+    SQLModel.metadata.create_all(test_engine)
 
 @pytest.fixture(scope="session")
-def create_tables():
-    return create_db_and_tables
+def test_session_factory(test_engine: Engine):
+    return sessionmaker(bind=test_engine, class_=Session, expire_on_commit=False)
 
-
-@pytest.fixture(scope="session")
-def create_user():
-     new_user = Users(
-            name = f'test_{datetime.now().strftime("%Y%m%d%H%M%S")}',
-            surname= "test_surname",
-            username="test_username",
-            password="test_password", # need hash
-            created_date= datetime.now(),
-            created_user="test_admim",
-        )
-     
-     return new_user
+@pytest.fixture(scope="function")
+def db_session(test_session_factory) -> Session:
+    session = test_session_factory()
+    try:
+        yield session
+    finally:
+        session.close()
 
 
 
-
+@pytest.fixture(scope="function")
+def create_test_user(db_session: Session) -> Users:
+    user = Users(
+        name="Test",
+        surname="User",
+        username="testuser",
+        password=hash_password("testpassword"),
+        created_date=datetime.utcnow(),
+        created_user="system",
+        updated_date=datetime.utcnow(),
+        updated_user="system"
+    )
+    return user
 
 
