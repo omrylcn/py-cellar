@@ -1,28 +1,4 @@
-# spinal-cord-segmenation
-
-- [x] Add evaluation
-- [ ] Create more dataset with different resolution and with different ratio
-- [x] Add more yolo model with deepth model names
-- [x] Add one_ring
-- [ ] Add sam
-- [ ] Use spinalcordtoolbox to get the ground truth
-- [x] Add the data augmentation
-- [ ] Analyze model and data
-- [ ] Add XAI
-- [ ] Calculate real world distance
-- [ ] Write api
-
-## Some Important Notes & Links
-
-- <https://github.com/mlyg/DicePlusPlus/tree/main>
-- <https://github.com/mlyg/focus-u-net>
-- <https://www.springerprofessional.de/en/transunet-with-unified-focal-loss-for-class-imbalanced-semantic-/26549342>
-- <https://www.irjet.net/archives/V9/i10/IRJET-V9I10135.pdf>
-
-## Setup Notes
-
-- sudo apt-get install libgl1  # For Debian/Ubuntu-based systems  
-- sudo apt-get install libgdcm-dev libjpeg-dev
+# ML API Template
 
 ## Docker Usage
 
