@@ -1,0 +1,4 @@
+.venv
+ml/siglip-base-patch16-224.bin
+ml/siglip-base-patch16-224.xml
+ml/workspace.ipynb
