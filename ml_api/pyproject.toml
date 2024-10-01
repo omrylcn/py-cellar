@@ -10,3 +10,20 @@ dependencies = [
     "pydantic>=2.9.2",
     "uvicorn>=0.31.0",
 ]
+
+[project.optional-dependencies]
+vision = [
+    "onnx>=1.16.2",
+    "onnxruntime>=1.19.2",
+]
+nlp = [
+    "transformers[torch]==4.30.0",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "ipywidgets>=8.1.5",
+    "jupyterlab>=4.2.5",
+    "matplotlib>=3.9.2",
+    "transformers[torch]==4.30.0",
+]
