@@ -13,7 +13,11 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = Field(default="ML API_0")
     PROJECT_VERSION: str = Field(default="0.0.0")
     PORT: int = Field(default=8000)
-
+    MINIO_ENDPOINT: str = Field(default="localhost")
+    MINIO_ACCESS_KEY: str = Field(default="minioadmin")
+    MINIO_SECRET_KEY: str = Field(default="minioadmin")
+    
+    
     model_config = SettingsConfigDict(
         env_file='.env',
         env_file_encoding='utf-8',
