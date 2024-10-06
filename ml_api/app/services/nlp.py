@@ -24,6 +24,8 @@ class QAService(AbstractModelService):
             access_key=self.settings.MINIO_ACCESS_KEY,
             secret_key=self.settings.MINIO_SECRET_KEY
         )
+
+        
         self.bucket_name = self.settings.QA_NAME+"-"+self.settings.QA_TAG+"-"+self.settings.QA_VERSION
         self.storage.create_bucket(self.bucket_name)
 
@@ -68,7 +70,7 @@ class QAService(AbstractModelService):
         self.storage.store_json(self.bucket_name, object_name, prediction_data)
 
     def get_prediction(self, object_name):
-        return self.storage.get_json("qa-predictions", object_name)
+        return self.storage.get_json(self.bucket_name, object_name)
 
 
 # import torch

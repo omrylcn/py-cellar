@@ -28,3 +28,13 @@ class AbstractModelService(ABC):
     @abstractmethod
     def get_prediction(self, *args, **kwargs):
         pass
+    
+    @abstractmethod
+    def _log_metadata(self, *args, **kwargs):
+        pass
+    
+    @abstractmethod
+    def _log_prediction(self, *args, **kwargs):
+        pass
+
+    
