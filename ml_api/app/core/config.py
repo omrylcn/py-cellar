@@ -13,11 +13,24 @@ class Settings(BaseSettings):
     PROJECT_NAME: str = Field(default="ML API_0")
     PROJECT_VERSION: str = Field(default="0.0.0")
     PORT: int = Field(default=8000)
+    
+    #logger
+    LOG_LEVEL: str = Field(default="INFO")
+    LOGGER_HANDLER: str = Field(default="file")
+
+    #minio
     MINIO_ENDPOINT: str = Field(default="localhost")
     MINIO_ACCESS_KEY: str = Field(default="minioadmin")
     MINIO_SECRET_KEY: str = Field(default="minioadmin")
     
-    
+    #mongo db
+    MONGODB_PORT:int = Field(default=27017)
+    MONGODB_ROOT_USERNAME: str = Field(default="root")
+    MONGODB_ROOT_PASSWORD: str = Field(default="root")
+    MONGODB_HOST: str = Field(default="localhost")
+    MONGODB_URL: str = Field(default="mongodb://root:example@localhost:27017")
+
+
     model_config = SettingsConfigDict(
         env_file='.env',
         env_file_encoding='utf-8',

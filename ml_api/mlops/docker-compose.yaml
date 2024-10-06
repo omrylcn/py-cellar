@@ -1,0 +1,78 @@
+---
+version: '3.8'
+services:
+  api:
+    image: api
+    build:
+      context: ..
+      dockerfile: mlops/Dockerfile
+    ports:
+      - 8000:8000
+    volumes:
+      - ../config:/usr/src/app/config
+      - ../app:/usr/src/app/app
+    networks:
+      - monitoring
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - '9000:9000'
+      - '9001:9001'
+    volumes:
+      - minio_data:/data
+      - minio_config:/root/.minio
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ACCESS_KEY}
+      MINIO_ROOT_PASSWORD: ${MINIO_SECRET_KEY}
+    command: server /data --console-address ":9001"
+    networks:
+      - monitoring
+
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    ports:
+      - ${MONGODB_PORT}:27017
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGODB_ROOT_USERNAME}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGODB_ROOT_PASSWORD}
+    networks:
+      - monitoring
+  prometheus:
+    image: prom/prometheus
+    container_name: prometheus
+    ports:
+      - '9090:9090'
+    volumes:
+      - ../mlops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    networks:
+      - monitoring
+  grafana:
+    image: grafana/grafana
+    container_name: grafana
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana_data:/var/lib/grafana
+      - ./grafana/provisioning:/etc/grafana/provisioning
+    environment:
+      GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER}
+      GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD}
+    networks:
+      - monitoring
+volumes:
+  minio_data: null
+  minio_config: null
+  mongodb_data: null
+  mongodb_config: null
+  prometheus_data: null
+  grafana_data: null
+networks:
+  monitoring:
+    driver: bridge

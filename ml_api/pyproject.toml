@@ -7,8 +7,11 @@ requires-python = ">=3.11"
 dependencies = [
     "fastapi>=0.115.0",
     "minio>=7.2.9",
+    "prometheus-fastapi-instrumentator>=7.0.0",
     "pydantic-settings>=2.5.2",
     "pydantic>=2.9.2",
+    "pymongo>=4.10.1",
+    "pyyaml>=6.0.2",
     "uvicorn>=0.31.0",
 ]
 
