@@ -1,6 +1,0 @@
-- [Distributed Data Processing with Ray Data and MinIO](https://blog.min.io/distributed-data-processing-with-ray-data-and-minio/)
-- [Mlops Series(Part2.1): Data Processing step with Prefect](https://medium.com/@seabgreatnavin/mlops-series-part2-1-data-processing-step-with-prefect-335383d9938b)
-- [Rewrite Bigdata in Rust](https://xuanwo.io/2024/07-rewrite-bigdata-in-rust/)
-- [Daft](https://github.com/Eventual-Inc/Daft/tree/main)
-- [Daft doc](https://www.getdaft.io/)
-- [distributed-query-benchmarking](https://github.com/Eventual-Inc/distributed-query-benchmarking)
