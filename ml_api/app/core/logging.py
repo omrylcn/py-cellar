@@ -9,6 +9,19 @@ from threading import Lock
 from app.core.config import settings
 
 
+def create_basic_logger():
+    logger = logging.getLogger(__name__)
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter("%(levelname)s:     %(message)s"))
+    logger.addHandler(handler)
+    logger.setLevel(logging.INFO)
+
+    return logger
+
+
+logger = create_basic_logger()
+
+
 class BaseDBLogger(ABC):
 
     def __init__(self) -> None:
@@ -31,10 +44,6 @@ class BaseDBLogger(ABC):
         pass
 
     @abstractmethod
-    def log_prediction(self, question: str, context: str, result: Dict[str, Any]):
-        pass
-
-    @abstractmethod
     def log_metadata(self, metadata: Dict[str, Any]):
         pass
 
@@ -50,20 +59,18 @@ class BaseDBLogger(ABC):
     def get_model_performance(self, start_date: datetime, end_date: datetime):
         pass
 
-    # def __del__(self):
-    #     for handler in self.logger.handlers:
-    #         handler.close()
-    #         self.logger.removeHandler(handler)
-
 
 class MongoDBLogger(BaseDBLogger):
-    def __init__(self, name: str, model_name: str, model_tag: str):
+    def __init__(self, name: str, model_name: str, model_tag: str, *args, **kwargs):
         self.client = MongoClient(settings.MONGODB_URL)
+
         self.db = self.client[name]
         self.predictions_collection = self.db["predictions"]
         self.logs_collection = self.db["operational_logs"]
         self.metadata_collection = self.db["metadata"]
         self.results_collection = self.db["model_results"]
+
+        logger.info(f"Connected to MongoDB: {self.client.server_info()}")
 
         self.model_name = model_name
         self.model_tag = model_tag
@@ -81,7 +88,7 @@ class MongoDBLogger(BaseDBLogger):
 
     def log_operation(self, message: str, level: str = "info", **kwargs):
         log_entry = {
-            "timestamp": datetime.utcnow(),
+            "timestamp": datetime.now(),
             "model_name": self.model_name,
             "model_tag": self.model_tag,
             "message": message,
@@ -91,21 +98,9 @@ class MongoDBLogger(BaseDBLogger):
         self.logs_collection.insert_one(log_entry)
         getattr(self.logger, level)(message)
 
-    def log_prediction(self, question: str, context: str, result: Dict[str, Any]):
-        prediction_data = {
-            "timestamp": datetime.utcnow(),
-            "model_name": self.model_name,
-            "model_tag": self.model_tag,
-            "question": question,
-            "context": context,
-            "result": result,
-        }
-        self.predictions_collection.insert_one(prediction_data)
-        self.log_operation(f"Prediction logged: {question[:50]}...", "info")
-
     def log_metadata(self, metadata: Dict[str, Any]):
         metadata_entry = {
-            "timestamp": datetime.utcnow(),
+            "timestamp": datetime.now(),
             "model_name": self.model_name,
             "model_tag": self.model_tag,
             **metadata,
@@ -113,11 +108,12 @@ class MongoDBLogger(BaseDBLogger):
         self.metadata_collection.insert_one(metadata_entry)
         self.log_operation(f"Metadata logged: {', '.join(metadata.keys())}", "info")
 
-    def log_model_results(self, results: Dict[str, Any]):
+    def log_model_results(self, input_info: Dict[str, Any], results: Dict[str, Any]):
         results_entry = {
-            "timestamp": datetime.utcnow(),
+            "timestamp": datetime.now(),
             "model_name": self.model_name,
             "model_tag": self.model_tag,
+            "input_info": input_info,
             **results,
         }
         self.results_collection.insert_one(results_entry)
@@ -127,36 +123,36 @@ class MongoDBLogger(BaseDBLogger):
         return self.predictions_collection.find_one({"_id": prediction_id})
 
     def get_model_performance(self, start_date: datetime, end_date: datetime):
-        pipeline = [
-            {
-                "$match": {
-                    "timestamp": {"$gte": start_date, "$lte": end_date},
-                    "model_name": self.model_name,
-                    "model_tag": self.model_tag,
-                }
-            },
-            {
-                "$group": {
-                    "_id": None,
-                    "total_predictions": {"$sum": 1},
-                    "avg_context_length": {"$avg": {"$strLenCP": "$context"}},
-                    "avg_question_length": {"$avg": {"$strLenCP": "$question"}},
-                }
-            },
-        ]
-        result = list(self.predictions_collection.aggregate(pipeline))
-        return result[0] if result else None
-
+        # pipeline = [
+        #     {
+        #         "$match": {
+        #             "timestamp": {"$gte": start_date, "$lte": end_date},
+        #             "model_name": self.model_name,
+        #             "model_tag": self.model_tag,
+        #         }
+        #     },
+        #     {
+        #         "$group": {
+        #             "_id": None,
+        #             "total_predictions": {"$sum": 1},
+        #             "avg_context_length": {"$avg": {"$strLenCP": "$context"}},
+        #             "avg_question_length": {"$avg": {"$strLenCP": "$question"}},
+        #         }
+        #     },
+        # ]
+        # result = list(self.predictions_collection.aggregate(pipeline))
+        # return result[0] if result else None
+        raise NotImplementedError("get_model_performance not implemented yet")
 
 class FileLogger(BaseDBLogger):
-    def __init__(self, name:str,model_name: str, model_tag: str, log_dir: str = None):
+    def __init__(self, name: str, model_name: str, model_tag: str, log_dir: str = None, *args, **kwargs):
 
         super().__init__()
         self.name = name
         self.model_name = model_name
         self.model_tag = model_tag
-        self.log_dir = os.path.join(log_dir if log_dir else settings.LOG_DIR,name)
-       
+        self.log_dir = os.path.join(log_dir if log_dir else settings.LOG_DIR, name)
+
         os.makedirs(self.log_dir, exist_ok=True)
 
         self.predictions_file = os.path.join(self.log_dir, f"{model_name}_{model_tag}_predictions.jsonl")
@@ -173,15 +169,6 @@ class FileLogger(BaseDBLogger):
 
         self.logger = self._setup_logger()
 
-    # def _setup_logger(self):
-    #     logger = logging.getLogger(f"{self.model_name}_{self.model_tag}")
-    #     logger.setLevel(self.log_info)
-    #     handler = logging.StreamHandler()
-    #     formatter = logging.Formatter(self.log_format)
-    #     handler.setFormatter(formatter)
-    #     logger.addHandler(handler)
-    #     return logger
-
     def _write_to_file(self, file_path: str, data: Dict):
         with self.file_locks[file_path]:
             with open(file_path, "a") as f:
@@ -190,7 +177,7 @@ class FileLogger(BaseDBLogger):
 
     def log_operation(self, message: str, level: str = "info", **kwargs):
         log_entry = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(),
             "model_name": self.model_name,
             "model_tag": self.model_tag,
             "message": message,
@@ -200,21 +187,9 @@ class FileLogger(BaseDBLogger):
         self._write_to_file(self.logs_file, log_entry)
         getattr(self.logger, level)(message)
 
-    def log_prediction(self, question: str, context: str, result: Dict[str, Any]):
-        prediction_data = {
-            "timestamp": datetime.utcnow().isoformat(),
-            "model_name": self.model_name,
-            "model_tag": self.model_tag,
-            "question": question,
-            "context": context,
-            "result": result,
-        }
-        self._write_to_file(self.predictions_file, prediction_data)
-        self.log_operation(f"Prediction logged: {question[:50]}...", "info")
-
     def log_metadata(self, metadata: Dict[str, Any]):
         metadata_entry = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(),
             "model_name": self.model_name,
             "model_tag": self.model_tag,
             **metadata,
@@ -222,11 +197,12 @@ class FileLogger(BaseDBLogger):
         self._write_to_file(self.metadata_file, metadata_entry)
         self.log_operation(f"Metadata logged: {', '.join(metadata.keys())}", "info")
 
-    def log_model_results(self, results: Dict[str, Any]):
+    def log_model_results(self, input_info: Dict[str, Any], results: Dict[str, Any]):
         results_entry = {
-            "timestamp": datetime.utcnow().isoformat(),
+            "timestamp": datetime.now(),
             "model_name": self.model_name,
             "model_tag": self.model_tag,
+            "input_info": input_info,
             **results,
         }
         self._write_to_file(self.results_file, results_entry)
@@ -244,41 +220,26 @@ class FileLogger(BaseDBLogger):
 
 
 class DBLogger:
-    def __init__(self, logger, *args, **kwargs):
+    def __init__(self, logger: str, name: str, *args, **kwargs):
         self.logger = logger if logger else settings.LOGGER_HANDLER
-        self.db_logger = logger_dict[logger](*args, **kwargs)
+        self.db_logger = logger_dict[logger](name=name, *args, **kwargs)
 
     def log_operation(self, message: str, level: str = "info", **kwargs):
         return self.db_logger.log_operation(message, level, **kwargs)
 
-    def log_prediction(self, question: str, context: str, result: Dict[str, Any]):
-        return self.db_logger.log_prediction(question, context, result)
-
     def log_metadata(self, metadata: Dict[str, Any]):
         return self.db_logger.log_metadata(metadata)
 
-    def log_model_results(self, results: Dict[str, Any]):
-        return self.db_logger.log_model_results(results)
+    def log_model_results(self, input_info: Dict[str, Any], results: Dict[str, Any]):
+        return self.db_logger.log_model_results(input_info, results)
 
     def get_prediction(self, prediction_id: str):
-        return self.db_logger.get_prediction(prediction_id)
+        raise NotImplementedError("Not implemented")
+        # return self.db_logger.get_prediction(prediction_id)
 
     def get_model_performance(self, start_date: datetime, end_date: datetime):
-        return self.db_logger.get_model_performance(start_date, end_date)
+        raise NotImplementedError("Not implemented")
+        # return self.db_logger.get_model_performance(start_date, end_date)
 
-
-def create_basic_logger():
-    logger = logging.getLogger(__name__)
-    handler = logging.StreamHandler()
-    handler.setFormatter(logging.Formatter("%(levelname)s:     %(message)s"))
-    logger.addHandler(handler)
-    logger.setLevel(logging.INFO)
-
-    return logger
-
-logger = create_basic_logger()
 
 logger_dict = {"mongo": MongoDBLogger, "file": FileLogger, "basic": logger}
-
-
-

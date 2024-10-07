@@ -10,3 +10,5 @@ class QAResponse(BaseModel):
     answer: str
     start: int
     end: int
+    confidence: float 
+    request_id: int

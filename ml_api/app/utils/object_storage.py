@@ -4,6 +4,7 @@ import json
 import io
 import uuid
 from typing import Optional
+from app.core.logging import logger
 
 
 class ObjectStorage:
@@ -19,11 +20,11 @@ class ObjectStorage:
         try:
             if not self.client.bucket_exists(bucket_name):
                 self.client.make_bucket(bucket_name)
-                print(f"Bucket '{bucket_name}' created successfully")
+                logger.info(f"Bucket '{bucket_name}' created successfully")
             else:
-                print(f"Bucket '{bucket_name}' already exists")
+                logger.info(f"Bucket '{bucket_name}' already exists")
         except S3Error as e:
-            print(f"Error creating bucket '{bucket_name}': {e}")
+            logger.error(f"Error creating bucket '{bucket_name}': {e}")
 
     def store_object(self, bucket_name: str, object_name: str, data: bytes, content_type: str) -> None:
         try:
@@ -34,16 +35,16 @@ class ObjectStorage:
                 length=len(data),
                 content_type=content_type
             )
-            print(f"Object '{object_name}' stored in bucket '{bucket_name}'")
+            logger.info(f"Object '{object_name}' stored in bucket '{bucket_name}'")
         except S3Error as e:
-            print(f"Error storing object '{object_name}' in bucket '{bucket_name}': {e}")
+            logger.error(f"Error storing object '{object_name}' in bucket '{bucket_name}': {e}")
 
     def get_object(self, bucket_name: str, object_name: str) -> Optional[bytes]:
         try:
             response = self.client.get_object(bucket_name, object_name)
             return response.read()
         except S3Error as e:
-            print(f"Error retrieving object '{object_name}' from bucket '{bucket_name}': {e}")
+            logger.error(f"Error retrieving object '{object_name}' from bucket '{bucket_name}': {e}")
             return None
 
     def store_json(self, bucket_name: str, object_name: str, data: dict) -> None:

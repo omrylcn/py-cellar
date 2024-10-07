@@ -1067,6 +1067,7 @@ source = { virtual = "." }
 dependencies = [
     { name = "fastapi" },
     { name = "minio" },
+    { name = "prometheus-client" },
     { name = "prometheus-fastapi-instrumentator" },
     { name = "pydantic" },
     { name = "pydantic-settings" },
@@ -1098,6 +1099,7 @@ requires-dist = [
     { name = "minio", specifier = ">=7.2.9" },
     { name = "onnx", marker = "extra == 'vision'", specifier = ">=1.16.2" },
     { name = "onnxruntime", marker = "extra == 'vision'", specifier = ">=1.19.2" },
+    { name = "prometheus-client", specifier = ">=0.21.0" },
     { name = "prometheus-fastapi-instrumentator", specifier = ">=7.0.0" },
     { name = "pydantic", specifier = ">=2.9.2" },
     { name = "pydantic-settings", specifier = ">=2.5.2" },

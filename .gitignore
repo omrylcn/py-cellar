@@ -5,7 +5,10 @@ ml_api/support
 ml_api/api_template/ml/siglip-base-patch16-224.bin
 ml_api/api_template/ml/siglip-base-patch16-224.xml
 ml_api/api_template/ml/workspace.ipynb
+ml_api/logs
 some_private_works
+workflow_management_pr
+retraning
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

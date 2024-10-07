@@ -1,0 +1,80 @@
+version: '3.8'
+
+services:
+  sca:
+    image: spinal_cord_api
+    build: 
+      context: ..
+      dockerfile: mlops/Dockerfile
+    # ports:
+    #   - "8000:8000"
+    volumes:
+      - ../results:/usr/src/app/results
+      - ../scseg:/usr/src/app/scseg
+      - ../spinal_cord_api:/usr/src/app/spinal_cord_api
+      - ../config:/usr/src/app/config
+      - ../trained_model:/usr/src/app/trained_model
+    environment:
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=minioadmin
+      - MINIO_SECRET_KEY=minioadmin
+      - MINIO_BUCKET_NAME=your-bucket-name
+      - MINIO_SECURE=false
+    networks:
+      - monitoring
+
+  minio:
+    image: minio/minio
+    container_name: minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+      - minio_config:/root/.minio
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
+    networks:
+      - monitoring
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - ../mlops/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+    networks:
+      - monitoring
+  
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    networks:
+      - monitoring
+
+  nginx:
+    image: nginx
+    ports:
+      - "80:80"
+      - "8000:8000" # spinal cord api
+    volumes:
+      - ../mlops/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ../mlops/nginx/.htpasswd:/etc/nginx/.htpasswd
+      - ../mlops/nginx/index.html:/usr/share/nginx/html/index.html
+      
+    networks:
+      - monitoring
+    depends_on:
+      - prometheus
+
+volumes:
+  minio_data:
+  minio_config:
+
+networks:
+  monitoring:
+    driver: bridge

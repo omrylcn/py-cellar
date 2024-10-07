@@ -17,6 +17,7 @@ class Settings(BaseSettings):
     #logger
     LOG_LEVEL: str = Field(default="INFO")
     LOGGER_HANDLER: str = Field(default="file")
+    LOG_DIR: str = Field(default="logs")
 
     #minio
     MINIO_ENDPOINT: str = Field(default="localhost")

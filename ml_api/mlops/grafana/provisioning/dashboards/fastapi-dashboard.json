@@ -30,6 +30,7 @@
         "defaults": {
           "color": {
             "mode": "palette-classic"
+      
           },
           "custom": {
             "axisCenteredZero": false,

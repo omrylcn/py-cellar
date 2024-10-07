@@ -2,29 +2,62 @@
 
 ## Docker Usage
 
-**build the image**
+**build api image**
 
-<!-- ```bash
-docker build -t spinal-cord-app -f docker/Dockerfile .  
+```bash
+docker build -t api -f mlops/Dockerfile .  
 ``
 
 ``bash
-docker run -d --name app -p 8000:8000 spinal-cord-app -v re
+docker run -d --name app -p 8000:8000 api 
 ``  
-# or with custom host and port
-docker run -d --name face-analysis -p 9000:9000 -e HOST=0.0.0.0 -e PORT=9000 face-analysis-app
-`` -->
-<!-- 
 ```bash
 #run with compose 
-docker-compose  -f docker/docker-compose.yaml up
-`` -->
+docker-compose  -f mlops/docker-compose.yaml up
+```
+
+## Usage
+
+```bash
+ # use makefile
+make docker-up # to run minio,grafana,prometheus,mongodb
+
+make run # to run api
+
+make docker-down # to stop minio,grafana,prometheus,mongodb
+
+```
+
+### Configuration
+
+The API uses environment variables for configuration. You can set the following variables in a `.env` file and config/config.yaml
+
+```bash
+# .env
+MINIO_ENDPOINT=localhost:9000
+MINIO_ACCESS_KEY=minioadmin
+MINIO_SECRET_KEY=minioadmin
+MINIO_SECURE=False
+
+MONGODB_PORT=27017
+MONGODB_ROOT_USERNAME=root
+MONGODB_ROOT_PASSWORD=example
+MONGODB_HOST=localhost
+MONGODB_URL=mongodb://root:example@localhost:27017
+
+PROMETHEUS_YAML_PATH=../mlops/prometheus/prometheus.yml
+
+GRAFANA_ADMIN_USER=admin
+GRAFANA_ADMIN_PASSWORD=admin
+
+```
 
 
+##  ML API Architecture Diagram
 
-#  ML API  System Architecture Diagram
 
 ```mermaid
+
 %%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#f5f5f5', 'primaryTextColor': '#333', 'primaryBorderColor': '#a6a6a6', 'lineColor': '#a6a6a6', 'secondaryColor': '#f5f5f5', 'tertiaryColor': '#f5f5f5'}}}%%
 
 graph TD
@@ -66,6 +99,5 @@ graph TD
     class User,Admin user;
     
     style Docker Environment fill:#ffffff,stroke:#d9d9d9,stroke-width:1px,stroke-dasharray: 3 3l:#1a1a1a,stroke:#F8B229,stroke-width:2px,stroke-dasharray: 5 5
-
 
 ```
