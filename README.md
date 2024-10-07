@@ -1,6 +1,6 @@
-# PY-CELLAR
+# py-cellar
 
-PY-CELLAR is a comprehensive repository that encompasses Machine Learning (ML), MLOps, and DataOps projects. This repository provides production-ready templates and tools for building robust ML applications and data pipelines.
+py-cellar is a comprehensive repository that encompasses Machine Learning (ML), MLOps, and DataOps projects. This repository provides production-ready templates and tools for building robust ML applications and data pipelines.
 
 ## Repository Structure
 
