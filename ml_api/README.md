@@ -91,7 +91,7 @@ Additional configuration can be set in `config/config.yaml`.
 
 ## Usage
 
-### Docker Compose
+### Makefile
 
 - Start the entire stack with .env parameters, check makefile:
   ```bash
