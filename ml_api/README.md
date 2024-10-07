@@ -69,7 +69,7 @@ graph TD
 ## Prerequisites
 
 - Docker and Docker Compose
-- Make (optional, for using Makefile commands)
+- Make
 
 ## Configuration
 
@@ -93,19 +93,7 @@ Additional configuration can be set in `config/config.yaml`.
 
 ### Docker Compose
 
-Run the entire stack with Docker Compose:
-
-```bash
-docker-compose -f mlops/docker-compose.yaml up
-```
-
-This command will build the API image and start all services defined in the docker-compose file.
-
-### Makefile
-
-For convenience, you can use the provided Makefile commands:
-
-- Start the entire stack:
+- Start the entire stack with .env parameters, check makefile:
   ```bash
   make docker-up
   ```
