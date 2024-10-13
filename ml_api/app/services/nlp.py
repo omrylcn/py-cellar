@@ -8,6 +8,13 @@ from app.core.config import settings, BaseSettings
 from app.core.config import settings as config_settings
 from app.core.logging import DBLogger
 from app.services.base import AbstractModelService
+from app.utils.monitoring.qa import *
+from app.utils.embedding import EmbeddingService
+
+from prometheus_client import Gauge
+
+# New metric for embedding distances
+EMBEDDING_DISTANCE = Gauge('qa_embedding_distance', 'Distance')
 
 
 class QAService(AbstractModelService):
@@ -42,6 +49,10 @@ class QAService(AbstractModelService):
         self.load_model()
         self.model.eval()
 
+        self.embedding_service = EmbeddingService()
+
+        
+
     def load_model(self):
         try:
             self.tokenizer = AutoTokenizer.from_pretrained(self.settings.QA_MODEL_PATH)
@@ -60,12 +71,13 @@ class QAService(AbstractModelService):
 
     def answer_question(self, question, context):
 
-        request_id = int(datetime.now().strftime("%Y%m%d%H%M%S%f"))
+        request_id = datetime.now().strftime("%Y%m%d%H%M%S%f")
         self.db_logger.log_operation(f"Processing question. Request ID: {request_id}")
 
         result = {"answer": None, "start": None, "end": None, "confidence": None, "request_id": request_id}
 
         try:
+            st = datetime.now()
             # Tokenize input
             inputs = self.tokenizer(question, context, return_tensors="pt", max_length=512, truncation=True)
 
@@ -91,6 +103,16 @@ class QAService(AbstractModelService):
             result.update(
                 {"answer": answer, "start": int(start_index), "end": int(end_index), "confidence": confidence}
             )
+            ft= datetime.now()
+            taken = (ft - st).total_seconds()
+            self.db_logger.log_operation(f"Processing time: {taken}")
+            #print(taken)
+
+
+            ### Log Parts
+            
+            embedding_distance = self.embedding_service.process_text(question)
+
 
             # Log results
             self.db_logger.log_model_results(
@@ -108,11 +130,15 @@ class QAService(AbstractModelService):
             # Store prediction
             self._store_prediction(question, context, result, request_id)
 
+            print(embedding_distance)
+            self._monitor_performance(question, context, result,taken,embedding_distance,request_id)
+
         except Exception as e:
             self.db_logger.log_operation(
                 f"Error answering question. Request ID: {request_id}, Error: {str(e)}", "error", exc_info=True
             )
             result["error"] = str(e)
+            
 
         finally:
             return result
@@ -132,6 +158,21 @@ class QAService(AbstractModelService):
 
         object_name = f"prediction_{request_id}.json"
         self.storage.store_json(self.bucket_name, object_name, prediction_data)
+    def _monitor_performance(self,question, context,result,taken,embedding_distance,request_id=None):
+        # Get current time
+      
+        QA_REQUESTS_TOTAL.inc()
+
+        QUESTION_LENGTH.observe(len(question))
+        CONTEXT_LENGTH.observe(len(context))
+        ANSWER_LENGTH.observe(len(result["answer"]))
+        QA_CONFIDENCE.observe(result["confidence"])
+        QA_LATENCY.observe(float(taken))
+        EMBEDDING_DISTANCE.set(embedding_distance)
+        
+
+
+
 
     def get_prediction(self, object_name):
         return self.storage.get_json(self.bucket_name, object_name)
