@@ -21,14 +21,6 @@ RUN sh /uv-installer.sh && rm /uv-installer.sh
 # Ensure the installed binary is on the `PATH`
 ENV PATH="/root/.cargo/bin/:$PATH"
 
-
-
-
-
-# COPY requirements.txt ./
-# RUN pip install -r requirements.txt
-# # RUN pip3 install tf-keras==2.16.0
-
 COPY ./app ./app
 COPY ./config ./config
 COPY ./ml ./ml
@@ -41,13 +33,6 @@ COPY ./run.py ./run.py
 RUN uv venv
 RUN uv  sync 
 
-
-
-
-# COPY ./spinal_cord_api ./spinal_cord_api
-# COPY ./trained_model ./trained_model
-# COPY ./api_main.py ./api_main.py
-# RUN mkdir results
 
 
 EXPOSE 8000

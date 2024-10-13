@@ -11,8 +11,8 @@ This project provides a template for a Machine Learning API with integrated MLOp
   - [Prerequisites](#prerequisites)
   - [Configuration](#configuration)
   - [Usage](#usage)
-    - [Docker Compose](#docker-compose)
     - [Makefile](#makefile)
+    - [Build API Image](#build-api-image)
   - [API Documentation](#api-documentation)
   - [Monitoring](#monitoring)
 
@@ -103,6 +103,12 @@ Additional configuration can be set in `config/config.yaml`.
   make docker-down
   ```
 
+### Build API Image
+
+```bash
+docker build -f api -f mlops/Dockerfile .
+```
+
 ## API Documentation
 
 Once the API is running, you can access the auto-generated API documentation at:
@@ -116,3 +122,4 @@ Once the API is running, you can access the auto-generated API documentation at:
 - Prometheus: `http://localhost:9090`
 - MinIO Console: `http://localhost:9001`
 
+![grafana-dashboard](doc/images/grafana.png)

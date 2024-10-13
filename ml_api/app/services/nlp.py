@@ -4,8 +4,7 @@ from datetime import datetime
 from typing import Dict, Any
 from transformers import AutoTokenizer, AutoModelForQuestionAnswering
 from app.utils.object_storage import ObjectStorage
-from app.core.config import settings, BaseSettings
-from app.core.config import settings as config_settings
+from app.core.config import BaseSettings,settings as config_settings
 from app.core.logging import DBLogger
 from app.services.base import AbstractModelService
 from app.utils.monitoring.qa import *
@@ -170,9 +169,6 @@ class QAService(AbstractModelService):
         QA_LATENCY.observe(float(taken))
         EMBEDDING_DISTANCE.set(embedding_distance)
         
-
-
-
 
     def get_prediction(self, object_name):
         return self.storage.get_json(self.bucket_name, object_name)

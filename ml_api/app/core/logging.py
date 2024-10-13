@@ -70,7 +70,7 @@ class MongoDBLogger(BaseDBLogger):
         self.metadata_collection = self.db["metadata"]
         self.results_collection = self.db["model_results"]
 
-        logger.info(f"Connected to MongoDB: {self.client.server_info()}")
+        logger.info(f"Connected to MongoDB: {self.client}")
 
         self.model_name = model_name
         self.model_tag = model_tag
