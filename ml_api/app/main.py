@@ -7,7 +7,7 @@ from app.core.config import settings
 
 app = FastAPI(title=settings.PROJECT_NAME, version=settings.PROJECT_VERSION)
 intrumentator = Instrumentator()
-intrumentator.add(metrics.default())
+#intrumentator.add(metrics.default())
 intrumentator.instrument(app).expose(app)
 
 # Include routers

@@ -9,6 +9,9 @@ ml_api/logs
 some_private_works
 workflow_management_pr
 retraning
+data_feedback
+mlops_notes
+serving
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

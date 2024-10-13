@@ -1,18 +1,18 @@
 ---
 version: '3.8'
 services:
-  api:
-    image: api
-    build:
-      context: ..
-      dockerfile: mlops/Dockerfile
-    ports:
-      - 8000:8000
-    volumes:
-      - ../config:/usr/src/app/config
-      - ../app:/usr/src/app/app
-    networks:
-      - monitoring
+  # api:
+  #   image: api
+  #   build:
+  #     context: ..
+  #     dockerfile: mlops/Dockerfile
+  #   ports:
+  #     - 8000:8000
+  #   volumes:
+  #     - ../config:/usr/src/app/config
+  #     - ../app:/usr/src/app/app
+  #   networks:
+  #     - monitoring
 
   minio:
     image: minio/minio
