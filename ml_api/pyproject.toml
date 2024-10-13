@@ -30,5 +30,6 @@ dev-dependencies = [
     "ipywidgets>=8.1.5",
     "jupyterlab>=4.2.5",
     "matplotlib>=3.9.2",
+    "sentence-transformers>=2.2.2",
     "transformers[torch]==4.30.0",
 ]
