@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -30,14 +31,15 @@
         "defaults": {
           "color": {
             "mode": "palette-classic"
-      
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -87,7 +89,6 @@
         "y": 0
       },
       "id": 2,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -137,11 +138,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "bars",
             "fillOpacity": 100,
             "gradientMode": "none",
@@ -224,7 +227,6 @@
         "y": 0
       },
       "id": 13,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -272,11 +274,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -343,7 +347,6 @@
         "y": 0
       },
       "id": 4,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -392,11 +395,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
             "gradientMode": "none",
@@ -447,7 +452,6 @@
         "y": 7
       },
       "id": 6,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -498,11 +502,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 25,
             "gradientMode": "none",
@@ -554,7 +560,6 @@
         "y": 7
       },
       "id": 15,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -604,11 +609,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -659,7 +666,6 @@
         "y": 7
       },
       "id": 8,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -706,11 +712,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -761,7 +769,6 @@
         "y": 13
       },
       "id": 9,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -809,11 +816,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -882,7 +891,6 @@
         "y": 15
       },
       "id": 11,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -929,11 +937,13 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -984,7 +994,6 @@
         "y": 15
       },
       "id": 16,
-      "links": [],
       "options": {
         "legend": {
           "calcs": [
@@ -1024,9 +1033,8 @@
       "type": "timeseries"
     }
   ],
-  "refresh": "3s",
-  "schemaVersion": 38,
-  "style": "dark",
+  "refresh": "5s",
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": []
@@ -1053,7 +1061,7 @@
   },
   "timezone": "",
   "title": "FastAPI Dashboard",
-  "uid": "_eX4mpl3",
-  "version": 5,
+  "uid": "api-dashboard",
+  "version": 3,
   "weekStart": ""
 }
