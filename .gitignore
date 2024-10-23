@@ -12,6 +12,7 @@ retraning
 data_feedback
 mlops_notes
 serving
+tp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

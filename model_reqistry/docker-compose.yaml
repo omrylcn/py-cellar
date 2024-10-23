@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:6.0
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_ROOT_USERNAME}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+    ports:
+      - "${MONGODB_PORT}:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  minio:
+    image: minio/minio:latest
+    environment:
+      - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
+      - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
+volumes:
+  mongodb_data:
+  minio_data:
