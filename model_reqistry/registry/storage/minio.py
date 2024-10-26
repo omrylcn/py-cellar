@@ -46,6 +46,7 @@ class MinioStorage(BaseStorage):
                 secret_key=settings.MINIO_SECRET_KEY,
                 secure=False#getattr(settings, 'MINIO_SECURE', False)
             )
+            
             logger.info("Successfully initialized MinIO client")
         except MinioException as e:
             logger.error(f"Failed to initialize MinIO client: {str(e)}")
@@ -70,6 +71,7 @@ class MinioStorage(BaseStorage):
                 self.client.make_bucket(bucket_name)
                 logger.info(f"Created new bucket: {bucket_name}")
         except MinioException as e:
+            raise
             logger.error(f"Bucket operation failed: {str(e)}")
             raise StorageError(f"Failed to ensure bucket: {str(e)}")
 
@@ -192,7 +194,7 @@ class MinioStorage(BaseStorage):
             except S3Error as e:
                 if e.code == 'NoSuchKey':
                     raise ModelNotFoundError(f"Model not found: {path}")
-                raise
+                
             
             self.client.remove_object(bucket_name, path)
             logger.info(f"Successfully deleted model: {bucket_name}/{path}")

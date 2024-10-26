@@ -128,8 +128,10 @@ class GetMetadataModelResponse(BaseModel):
 
 class ModelInfo(BaseModel):
     """Model information returned after registration"""
-
+    
+    name:str
+    version:str
     metadata_id: str
-    storage_path: str
-    storage_info: Dict[str, Any]
+    file_path: str
+    storage_group: str
     registration_time: datetime

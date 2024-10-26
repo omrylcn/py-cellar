@@ -57,7 +57,7 @@ class Settings(BaseSettings):
     """
     PROJECT_NAME: str = Field(default="Registry")
     PROJECT_VERSION: str = Field(default="0.0.0")
-    PORT: int = Field(default=8000)
+    API_PORT: int = Field(default=8000)
     
     LOGGER_NAME: str = Field(default="registry")
     LOG_LEVEL: str = Field(default="INFO")
