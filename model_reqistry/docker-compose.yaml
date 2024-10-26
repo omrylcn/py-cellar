@@ -3,6 +3,7 @@ version: '3.8'
 services:
   mongodb:
     image: mongo:6.0
+    container_name: mongodb
     environment:
       - MONGO_INITDB_ROOT_USERNAME=${MONGODB_ROOT_USERNAME}
       - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
@@ -10,9 +11,13 @@ services:
       - "${MONGODB_PORT}:27017"
     volumes:
       - mongodb_data:/data/db
+    
+    networks:
+      - registry_network
 
   minio:
     image: minio/minio:latest
+    container_name: minio
     environment:
       - MINIO_ROOT_USER=${MINIO_ACCESS_KEY}
       - MINIO_ROOT_PASSWORD=${MINIO_SECRET_KEY}
@@ -22,6 +27,35 @@ services:
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
+    networks:
+      - registry_network
+
+  registry:
+    image: registry
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${API_PORT}:8000"
+    volumes:
+      - ./registry:/usr/src/app/registry
+    environment:
+      - MONGODB_URL=mongodb://${MONGODB_ROOT_USERNAME}:${MONGODB_ROOT_PASSWORD}@mongodb:27017/
+      - MINIO_ENDPOINT=minio:9000
+      - MINIO_ACCESS_KEY=${MINIO_ACCESS_KEY}
+      - MINIO_SECRET_KEY=${MINIO_SECRET_KEY}
+      - MONGODB_ROOT_USERNAME=${MONGODB_ROOT_USERNAME}
+      - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
+    command: ["uv", "run", "uvicorn", "registry.api:app", "--host", "0.0.0.0","--reload"]
+    depends_on:
+      - mongodb
+      - minio
+    networks:
+      - registry_network
+
+networks:
+    registry_network:
+      driver: bridge
 
 volumes:
   mongodb_data:
