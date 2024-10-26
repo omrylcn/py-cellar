@@ -150,30 +150,30 @@ class BaseMetadataStorage(ABC):
         """
         pass
     
-    @abstractmethod
-    def update_metadata(self, model_id: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
-        """
-        Update model metadata.
+    # @abstractmethod
+    # def update_metadata(self, model_id: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
+    #     """
+    #     Update model metadata.
 
-        Parameters
-        ----------
-        model_id : str
-            Unique identifier of the model
-        metadata : dict
-            New metadata to update
+    #     Parameters
+    #     ----------
+    #     model_id : str
+    #         Unique identifier of the model
+    #     metadata : dict
+    #         New metadata to update
 
-        Returns
-        -------
-        dict
-            Updated metadata dictionary
+    #     Returns
+    #     -------
+    #     dict
+    #         Updated metadata dictionary
 
-        Raises
-        ------
-        StorageError
-            If updating the metadata fails
-        ValueError
-            If no metadata exists for the given ID
-        ValidationError
-            If the new metadata is invalid
-        """
-        pass
+    #     Raises
+    #     ------
+    #     StorageError
+    #         If updating the metadata fails
+    #     ValueError
+    #         If no metadata exists for the given ID
+    #     ValidationError
+    #         If the new metadata is invalid
+    #     """
+    #     pass

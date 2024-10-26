@@ -43,22 +43,31 @@ class ModelResponse(BaseModel):
 
     Parameters
     ----------
+    id : str
+        Unique identifier for the model response
     name : str
         Name of the model
     version : str
         Version of the model
+    metadata_id : str
+        ID reference to the associated model metadata
+    storage_group : str
+        Name of storage location (bucket name for MinIO)
     storage_path : str
         Path where the model file is stored
     created_at : datetime
         Timestamp when the model was registered
-    metrics : dict, optional
-        Dictionary of model performance metrics
     description : str, optional
         Description of the model
+    framework : str, optional
+        ML framework used (e.g., 'pytorch', 'tensorflow')
     """
+    id:str
     name: str
     version: str
+    metadata_id:str
+    storage_group: str
     storage_path: str
     created_at: datetime
-    metrics: Optional[Dict[str, Any]] = None
     description: Optional[str] = None
+    framework: Optional[str] = None
