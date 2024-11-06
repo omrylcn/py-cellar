@@ -13,6 +13,7 @@ data_feedback
 mlops_notes
 serving
 tp
+feature_store/my_project
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
