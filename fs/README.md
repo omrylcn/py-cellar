@@ -27,4 +27,6 @@ flowchart TB
 ### Examples
 
 - [feast-credit-score-local-tutorial](https://github.com/feast-dev/feast-credit-score-local-tutorial)
-- []
+- [feast worrkshop](https://github.com/feast-dev/feast-workshop)
+- [feat tutorial](https://github.com/iamirmasoud/feast-tutorial/tree/masterl)
+- [feature_store_with_feast](https://github.com/GokuMohandas/feature-store/blob/main/feature_store.ipynb)
