@@ -7,7 +7,7 @@
 - [Feature Store - MadewithML](https://madewithml.com/courses/mlops/feature-store/#when-do-i-need-a-feature-store)
     - [repo link](https://github.com/GokuMohandas/feature-store/tree/main)
 
-- [Feature Store : Definitve Guide - Hopworks-blog](https://mljam.com/feature-store/)
+- [Feature Store : Definitve Guide - Hopworks-blog](https://www.hopsworks.ai/dictionary/feature-store)
 - [Data Science and MLOps with Feast: Mastering Feature Store - blog](https://oleg-dubetcky.medium.com/data-science-and-mlops-with-feast-mastering-feature-store-2b92c55ddd25)
 - [Feast Feature Store — An In-depth Overview Experimentation and Application in Tabular data - blog](https://medium.com/@ongxuanhong/mlops-03-feast-feature-store-an-in-depth-overview-experimentation-and-application-in-tabular-b9d1c5376483)
 
