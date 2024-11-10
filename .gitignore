@@ -1,4 +1,5 @@
 config.yaml
+ml_train
 py-cellar/.vscode
 web_sockets
 ml_api/support
@@ -14,6 +15,14 @@ mlops_notes
 serving
 tp
 feature_store/my_project
+
+# fs
+fs/redis_feature_store
+fs/my_project
+fs/customer_purchase
+fs/credit_score
+fs/data
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
