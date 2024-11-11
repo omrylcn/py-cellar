@@ -1,0 +1,23 @@
+
+H
+*
+__dummy"
+__dummy_idJpurchase_prediction
+ŸŸÈ¹ØÅµ@ŸŸÈ¹ØÅµ@
+X
+8
+customercustomer id"customerJpurchase_prediction
+ğ®È¹ĞÖ¥Äğ®È¹ĞÖ¥Ä1"$250cf9a0-b67e-4ddf-9f9c-f97af7519496*«¯È¹àâÖ2Æ
+¥
+customer_featurespurchase_predictioncustomer"
+prev_purchase_amount"
+days_since_prev_purchase"
+rolling_mean_prev_amount2€£:„event_timestampZdata/train_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢data/train_features.parquet@b
+customer
+ğ®È¹ÀŸÇÄğ®È¹ÀŸÇÄRš
+—
+,feast.infra.online_stores.sqlite.SqliteTable"g
+>/home/omer/Work/py-cellar/fs/feature_repo/data/online_store.db%purchase_prediction_customer_featuresbševent_timestampZdata/train_features.parquetŠ1feast.infra.offline_stores.file_source.FileSource¢data/train_features.parquetªpurchase_predictionŠ3
+
+purchase_prediction
+ŸŸÈ¹°‘Ä9ŸŸÈ¹°‘Ä9
