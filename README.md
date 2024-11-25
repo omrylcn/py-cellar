@@ -42,3 +42,6 @@ The `crud_api` directory contains a production-ready CRUD API template with auth
 - Secure authentication and authorization
 - Docker Compose setup for easy deployment
 - Comprehensive test suite using pytest
+### 3. Model Registry
+### 4. Feature Store
+
