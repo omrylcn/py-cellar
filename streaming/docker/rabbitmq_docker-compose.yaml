@@ -1,0 +1,22 @@
+version: "3"
+services:
+  rabbitmq:
+    image: rabbitmq:3.9-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"    # RabbitMQ main port
+      - "15672:15672"  # Management UI port
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    networks:
+      - rabbitmq_net
+
+volumes:
+  rabbitmq_data:
+
+networks:
+  rabbitmq_net:
+    driver: bridge
