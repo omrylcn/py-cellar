@@ -23,9 +23,19 @@ fs/customer_purchase
 fs/credit_score
 fs/data
 
+# batch_processing
+batch_processing/data-engineering-zoomcamp
+batch_processing/fhvhv
+batch_processing/fhvhv/2021
+batch_processing/fhvhv/2021/01
+batch_processing/fhvhv_tripdata_2021-01.csv
+batch_processing/fhvhv_tripdata_2021-01.csv.gz
+batch_processing/spark_dataframe.ipynb
+batch_processing/workspace.ipynb
+
     1234er5t6y7uı89o0p*ğ-
      cvbdeb 
-data-egineering-zoomcamp
+batch_processing/data-egineering-zoomcamp
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
