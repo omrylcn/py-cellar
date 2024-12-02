@@ -4,6 +4,7 @@
 - [Model Deployment Strategies - neptune blog](https://neptune.ai/blog/model-deployment-strategies)
 - [Understanding Deployment Patterns for Machine Learning Models](https://medium.com/@sahin.samia/understanding-deployment-patterns-for-machine-learning-models-06923caa9bc0)
 - [MACHINE LEARNING MODEL DEPLOYMENT PATTERNS](https://medium.com/@oviemunooboro/machine-learning-model-deployment-patterns-d4a1c10928f5)
+- [Challenges in Deploying Machine Learning: a Survey of Case Studies](https://arxiv.org/pdf/2011.09926)
   
 ### Pipeline
 
