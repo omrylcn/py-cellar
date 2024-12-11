@@ -4,13 +4,35 @@ version = "0.1.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.11"
-dependencies = [
-    "fastapi>=0.115.3",
-    "minio>=7.2.9",
+
+[project.optional-dependencies]
+registry = [
+    "fastapi>=0.115.4",
+    "minio>=7.2.10",
     "pydantic-settings[yaml]>=2.6.0",
-    "pydantic>=2.9.2",
     "pymongo>=4.10.1",
-    "python-multipart>=0.0.12",
+    "python-multipart>=0.0.16",
     "requests>=2.32.3",
     "uvicorn>=0.32.0",
 ]
+
+[tool.uv]
+dev-dependencies = [
+    "getdaft>=0.3.9",
+    "jupyter>=1.1.1",
+    "lightgbm>=4.5.0",
+    "matplotlib>=3.9.2",
+    "mlflow>=2.17.1",
+    "omegaconf>=2.3.0",
+    "pandas>=2.2.3",
+    "polars>=1.12.0",
+    "prefect>=3.0.11",
+    "pytest>=8.3.3",
+    "ruff>=0.7.1",
+    "scikit-learn>=1.5.2",
+    "xgboost>=2.1.2",
+]
+
+
+[tool.ruff]
+line-length = 200

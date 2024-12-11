@@ -5,6 +5,7 @@ from typing import Tuple, Type
 
 CONFIG_YAML_PATH = "config/registry.yaml"
 
+
 class Settings(BaseSettings):
     """
     Configuration settings for the model registry.
@@ -55,10 +56,11 @@ class Settings(BaseSettings):
     3. YAML config file
     4. Default values
     """
+
     PROJECT_NAME: str = Field(default="Registry")
     PROJECT_VERSION: str = Field(default="0.0.0")
     API_PORT: int = Field(default=8000)
-    
+
     LOGGER_NAME: str = Field(default="registry")
     LOG_LEVEL: str = Field(default="INFO")
     LOGGER_HANDLER: str = Field(default="file")
@@ -68,7 +70,7 @@ class Settings(BaseSettings):
     MINIO_ACCESS_KEY: str = Field(default="minioadmin")
     MINIO_SECRET_KEY: str = Field(default="minioadmin")
     MINIO_BUCKET: str = Field(default="models")
-    
+
     MONGODB_PORT: int = Field(default=27017)
     MONGODB_ROOT_USERNAME: str = Field(default="root")
     MONGODB_ROOT_PASSWORD: str = Field(default="root")
@@ -76,13 +78,7 @@ class Settings(BaseSettings):
     MONGODB_DB: str = Field(default="metadata")
     MONGODB_URL: str = Field(default="mongodb://root:root@localhost:27017")
 
-    model_config = SettingsConfigDict(
-        env_file='.env',
-        env_file_encoding='utf-8',
-        extra="allow",
-        yaml_file=CONFIG_YAML_PATH,
-        case_sensitive=True
-    )
+    model_config = SettingsConfigDict(env_file=".env", env_file_encoding="utf-8", extra="allow", yaml_file=CONFIG_YAML_PATH, case_sensitive=True)
 
     @classmethod
     def settings_customise_sources(
@@ -101,12 +97,13 @@ class Settings(BaseSettings):
         tuple
             Tuple of configuration sources in priority order
         """
-        return (      
+        return (
             env_settings,
             dotenv_settings,
             YamlConfigSettingsSource(settings_cls),
             init_settings,
             file_secret_settings,
         )
+
 
 settings = Settings()

@@ -62,9 +62,7 @@ class ModelRegistryClient:
             logger.error(f"Health check failed: {str(e)}")
             raise RegistryConnectionError(f"Failed to connect to registry: {str(e)}")
 
-    def upload_model(
-        self, model_buffer: Union[BinaryIO, bytes, io.BytesIO], metadata: ModelMetadata, filename: Optional[str] = None
-    ) -> ModelInfo:
+    def upload_model(self, model_buffer: Union[BinaryIO, bytes, io.BytesIO], metadata: ModelMetadata, filename: Optional[str] = None) -> ModelInfo:
         """Upload a model to the registry"""
         try:
             model_buffer.seek(0)
@@ -86,16 +84,14 @@ class ModelRegistryClient:
                 metadata_id=result["metadata_id"],
                 file_path=result["storage_path"],
                 storage_group=result["storage_group"],
-                registration_time=result["created_at"]
+                registration_time=result["created_at"],
             )
 
         except requests.exceptions.RequestException as e:
             logger.error(f"Failed to upload model: {str(e)}")
             raise ModelUploadError(f"Failed to upload model: {str(e)}")
 
-    def get_model_buffer(
-        self, file_path: str, metadata_id: str, bucket_name: Optional[str] = None
-    ) -> Tuple[io.BytesIO, Dict[str, Any]]:
+    def get_model_buffer(self, file_path: str, metadata_id: str, bucket_name: Optional[str] = None) -> Tuple[io.BytesIO, Dict[str, Any]]:
         """Retrieve a model and its metadata from the registry"""
         try:
             params = {"metadata_id": metadata_id}
@@ -103,16 +99,12 @@ class ModelRegistryClient:
                 params["bucket_name"] = bucket_name
 
             logger.info(f"Retrieving model metadata: {file_path}")
-            metadata_response = self.session.get(
-                f"{self.base_url}/models/metadata/{file_path}", params=params, timeout=self.timeout
-            )
+            metadata_response = self.session.get(f"{self.base_url}/models/metadata/{file_path}", params=params, timeout=self.timeout)
             metadata_response.raise_for_status()
             metadata = metadata_response.json()
 
             logger.info(f"Retrieving model file: {file_path}")
-            file_response = self.session.get(
-                f"{self.base_url}/models/file/{file_path}", params=params, stream=True, timeout=self.timeout
-            )
+            file_response = self.session.get(f"{self.base_url}/models/file/{file_path}", params=params, stream=True, timeout=self.timeout)
             file_response.raise_for_status()
 
             buffer = io.BytesIO()

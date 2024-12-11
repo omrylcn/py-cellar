@@ -38,6 +38,7 @@ class ModelMetadata(BaseModel):
     framework: str = None
     metrics: Optional[Dict[str, Any]] = None
     parameters: Optional[Dict[str, Any]] = None
+    tags: Optional[Dict[str, Any]] = Field(default=None , description="Tags for the model")
 
 
 class ModelResponse(BaseModel):
@@ -128,9 +129,9 @@ class GetMetadataModelResponse(BaseModel):
 
 class ModelInfo(BaseModel):
     """Model information returned after registration"""
-    
-    name:str
-    version:str
+
+    name: str
+    version: str
     metadata_id: str
     file_path: str
     storage_group: str

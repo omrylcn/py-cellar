@@ -7,7 +7,7 @@ providing standard interfaces that must be implemented by concrete storage class
 
 from abc import ABC, abstractmethod
 from typing import BinaryIO, Dict, Any
-from datetime import datetime
+
 
 class BaseStorage(ABC):
     """
@@ -21,7 +21,7 @@ class BaseStorage(ABC):
     --------
     MinioStorage : Implementation using MinIO object storage
     """
-    
+
     @abstractmethod
     def store_model(self, model_file: BinaryIO, path: str) -> str:
         """
@@ -45,7 +45,7 @@ class BaseStorage(ABC):
             If storing the model fails
         """
         pass
-    
+
     @abstractmethod
     def get_model(self, path: str) -> BinaryIO:
         """
@@ -69,7 +69,7 @@ class BaseStorage(ABC):
             If the model file does not exist
         """
         pass
-    
+
     @abstractmethod
     def delete_model(self, path: str) -> None:
         """
@@ -89,6 +89,7 @@ class BaseStorage(ABC):
         """
         pass
 
+
 class BaseMetadataStorage(ABC):
     """
     Abstract base class for model metadata storage implementations.
@@ -101,7 +102,7 @@ class BaseMetadataStorage(ABC):
     --------
     MongoStorage : Implementation using MongoDB
     """
-    
+
     @abstractmethod
     def store_metadata(self, metadata: Dict[str, Any]) -> str:
         """
@@ -125,7 +126,7 @@ class BaseMetadataStorage(ABC):
             If the metadata is invalid
         """
         pass
-    
+
     @abstractmethod
     def get_metadata(self, model_id: str) -> Dict[str, Any]:
         """
@@ -149,7 +150,7 @@ class BaseMetadataStorage(ABC):
             If no metadata exists for the given ID
         """
         pass
-    
+
     # @abstractmethod
     # def update_metadata(self, model_id: str, metadata: Dict[str, Any]) -> Dict[str, Any]:
     #     """

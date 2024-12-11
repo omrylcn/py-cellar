@@ -7,15 +7,17 @@ using MinIO object storage for storing model files.
 
 import io
 import logging
-from typing import BinaryIO, Dict, Any, Tuple
+from typing import BinaryIO, Dict, Any
 from minio import Minio
+from minio.tagging import Tags
 from minio.error import MinioException, S3Error
 
 from .base import BaseStorage
 from ..config import settings
 from ..exceptions import StorageError, ModelNotFoundError
-
+import urllib3
 logger = logging.getLogger(__name__)
+
 
 class MinioStorage(BaseStorage):
     """
@@ -40,13 +42,17 @@ class MinioStorage(BaseStorage):
             If connection to MinIO server fails
         """
         try:
+            logger.info(f"Initializing MinIO client with endpoint: {settings.MINIO_ENDPOINT}")
             self.client = Minio(
                 settings.MINIO_ENDPOINT,
                 access_key=settings.MINIO_ACCESS_KEY,
                 secret_key=settings.MINIO_SECRET_KEY,
-                secure=False#getattr(settings, 'MINIO_SECURE', False)
+                secure=False,
+                http_client=urllib3.PoolManager(headers={'Host': 'registry_minio:9000'}
+    )
+                    # getattr(settings, 'MINIO_SECURE', False)
             )
-            
+
             logger.info("Successfully initialized MinIO client")
         except MinioException as e:
             logger.error(f"Failed to initialize MinIO client: {str(e)}")
@@ -71,12 +77,10 @@ class MinioStorage(BaseStorage):
                 self.client.make_bucket(bucket_name)
                 logger.info(f"Created new bucket: {bucket_name}")
         except MinioException as e:
-            raise
             logger.error(f"Bucket operation failed: {str(e)}")
             raise StorageError(f"Failed to ensure bucket: {str(e)}")
 
-    def store_model(self, model_file: BinaryIO, path: str, 
-                   bucket_name: str) -> Dict[str, Any]:
+    def store_model(self, model_file: BinaryIO, path: str, bucket_name: str,tags:Dict[str,Any]=None) -> Dict[str, Any]:
         """
         Store a model file in MinIO.
 
@@ -99,33 +103,41 @@ class MinioStorage(BaseStorage):
         StorageError
             If storing the model fails
         """
+
+       
         try:
+            logger.info(f"Storing model in MinIO: {path}")
+            logger.info(f"Bucket: {bucket_name}")
             self._ensure_bucket(bucket_name)
-            
+
             # Get file size
             file_size = model_file.seek(0, 2)
             model_file.seek(0)
-
+            
+            if tags is None:
+                minio_tags = Tags.new_object_tags()
+            else:
+                minio_tags = Tags.new_object_tags()
+                for key, value in tags.items():
+                    minio_tags[key] = str(value)  #
+            
             # Store file
             result = self.client.put_object(
                 bucket_name,
                 path,
                 model_file,
                 file_size,
-                #metadata={'content-type': 'application/octet-stream'}
+                tags=minio_tags,
+                # metadata={'content-type': 'application/octet-stream'}
             )
-            
-            storage_info = {
-                'path': path,
-                'bucket': bucket_name,
-                'size': file_size,
-                'etag': result.etag
-            }
-            
+
+            storage_info = {"path": path, "bucket": bucket_name, "size": file_size, "etag": result.etag}
+
             logger.info(f"Successfully stored model: {storage_info}")
             return storage_info
-            
+
         except MinioException as e:
+            logger.info("zeynooooooo")
             logger.error(f"Failed to store model: {str(e)}")
             raise StorageError(f"Model storage failed: {str(e)}")
 
@@ -157,9 +169,9 @@ class MinioStorage(BaseStorage):
             response = self.client.get_object(bucket_name, path)
             data = io.BytesIO(response.read())
             return data
-            
+
         except S3Error as e:
-            if e.code == 'NoSuchKey':
+            if e.code == "NoSuchKey":
                 logger.error(f"Model not found: {bucket_name}/{path}")
                 raise ModelNotFoundError(f"Model not found: {path}")
             logger.error(f"Failed to retrieve model: {str(e)}")
@@ -192,13 +204,12 @@ class MinioStorage(BaseStorage):
             try:
                 self.client.stat_object(bucket_name, path)
             except S3Error as e:
-                if e.code == 'NoSuchKey':
+                if e.code == "NoSuchKey":
                     raise ModelNotFoundError(f"Model not found: {path}")
-                
-            
+
             self.client.remove_object(bucket_name, path)
             logger.info(f"Successfully deleted model: {bucket_name}/{path}")
-            
+
         except S3Error as e:
             logger.error(f"Failed to delete model: {str(e)}")
             raise StorageError(f"Failed to delete model: {str(e)}")

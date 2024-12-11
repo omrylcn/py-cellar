@@ -5,7 +5,6 @@ This module provides a centralized registry for managing machine learning models
 and their metadata using MinIO for model storage and MongoDB for metadata storage.
 """
 
-import logging
 from typing import BinaryIO, Dict, Any, Tuple, Optional
 import datetime
 
@@ -21,7 +20,7 @@ class ModelRegistry:
     A registry for managing ML models and their metadata.
 
     This class provides functionality to store and retrieve machine learning models
-    along with their associated metadata using MinIO for model storage and MongoDB 
+    along with their associated metadata using MinIO for model storage and MongoDB
     for metadata storage.
 
     Attributes
@@ -44,14 +43,9 @@ class ModelRegistry:
 
     def _generate_storage_path(self, metadata: Dict[str, Any]) -> str:
         """Generate storage path for model file."""
-        return (f"{metadata['id']}_{metadata['name']}_"
-                f"{metadata['version']}.{metadata['file_extension']}")
+        return f"{metadata['id']}_{metadata['name']}_" f"{metadata['version']}.{metadata['file_extension']}"
 
-    def register_model(
-        self,
-        model_file: BinaryIO,
-        metadata: Dict[str, Any]
-    ) -> ModelResponse:
+    def register_model(self, model_file: BinaryIO, metadata: Dict[str, Any]) -> ModelResponse:
         """
         Register a new model with its metadata.
 
@@ -75,6 +69,7 @@ class ModelRegistry:
                 Model description
             - framework : str, optional
                 ML framework used
+            
 
         Returns
         -------
@@ -89,42 +84,33 @@ class ModelRegistry:
         try:
             # Generate storage path
             file_path = self._generate_storage_path(metadata)
-        
+
             # Store model file
-            storage_info = self.model_storage.store_model(
-                model_file,
-                file_path,
-                metadata['storage_group']
-            )
-            
+            storage_info = self.model_storage.store_model(model_file, file_path, metadata["storage_group"],metadata["tags"])
+
             # Prepare complete metadata
-            full_metadata = {
-                **metadata,
-                'storage_path': file_path,
-                'storage_info': storage_info,
-                'registration_time': datetime.datetime.now(datetime.timezone.utc)
-            }
-            
+            full_metadata = {**metadata, "storage_path": file_path, "storage_info": storage_info, "registration_time": datetime.datetime.now(datetime.timezone.utc)}
+
             # Store metadata
             metadata_id = self.metadata_storage.store_metadata(full_metadata)
-            
+
             logger.info(f"Successfully registered model: {metadata['id']} v{metadata['version']}")
-            
+
             return ModelResponse(
-                id=metadata['id'],
-                name=metadata['name'],
-                version=metadata['version'],
+                id=metadata["id"],
+                name=metadata["name"],
+                version=metadata["version"],
                 metadata_id=metadata_id,
-                storage_group=metadata['storage_group'],
+                storage_group=metadata["storage_group"],
                 storage_path=file_path,
                 created_at=datetime.datetime.now(datetime.timezone.utc),
-                description=metadata.get('description'),
-                framework=metadata.get('framework')
+                description=metadata.get("description"),
+                framework=metadata.get("framework"),
             )
-            
+
         except Exception as e:
             logger.error(f"Model registration failed: {str(e)}")
-            self._cleanup_failed_registration(file_path, metadata['storage_group'])
+            self._cleanup_failed_registration(file_path, metadata["storage_group"])
             raise RegistryError(f"Failed to register model: {str(e)}")
 
     def _cleanup_failed_registration(self, file_path: str, bucket: str) -> None:
@@ -134,12 +120,7 @@ class ModelRegistry:
         except Exception as e:
             logger.error(f"Cleanup after failed registration failed: {str(e)}")
 
-    def get_model(
-        self,
-        file_path: str,
-        metadata_id: str,
-        bucket_name: Optional[str] = None
-    ) -> Tuple[BinaryIO, Dict[str, Any]]:
+    def get_model(self, file_path: str, metadata_id: str, bucket_name: Optional[str] = None) -> Tuple[BinaryIO, Dict[str, Any]]:
         """
         Retrieve model and its metadata.
 
@@ -165,19 +146,15 @@ class ModelRegistry:
         try:
             # Get metadata first
             metadata = self.metadata_storage.get_metadata(metadata_id)
-          
-            
+
             # Use bucket from metadata if not specified
-            bucket = bucket_name or metadata.get('storage_group')
-            
+            bucket = bucket_name or metadata.get("storage_group")
+
             # Get model file
-            model_file = self.model_storage.get_model(
-                file_path,
-                bucket
-            )
-            
+            model_file = self.model_storage.get_model(file_path, bucket)
+
             return model_file, metadata
-            
+
         except Exception as e:
             logger.error(f"Failed to retrieve model: {str(e)}")
             raise RegistryError(f"Failed to retrieve model: {str(e)}")

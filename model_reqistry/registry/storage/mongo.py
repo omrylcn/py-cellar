@@ -7,7 +7,6 @@ using MongoDB for storing model metadata.
 
 import logging
 from typing import Dict, Any
-from datetime import datetime, timezone
 from pymongo import MongoClient
 from bson import ObjectId
 
@@ -16,6 +15,7 @@ from ..config import settings
 from ..exceptions import RegistryError
 
 logger = logging.getLogger(__name__)
+
 
 class MongoStorage(BaseMetadataStorage):
     """
@@ -52,7 +52,7 @@ class MongoStorage(BaseMetadataStorage):
         except Exception as e:
             logger.error(f"Failed to initialize MongoDB client: {str(e)}")
             raise RegistryError(f"MongoDB initialization failed: {str(e)}")
-    
+
     def store_metadata(self, metadata: Dict[str, Any]) -> str:
         """
         Store model metadata in MongoDB.
@@ -74,14 +74,14 @@ class MongoStorage(BaseMetadataStorage):
         """
         try:
             # Add timestamp
-            
+
             result = self.collection.insert_one(metadata)
             logger.info(f"Successfully stored metadata with ID: {result.inserted_id}")
             return str(result.inserted_id)
         except Exception as e:
             logger.error(f"Failed to store metadata: {str(e)}")
             raise RegistryError(f"Failed to store metadata: {str(e)}")
-    
+
     def get_metadata(self, model_id: str) -> Dict[str, Any]:
         """
         Retrieve model metadata from MongoDB by ID.
@@ -102,15 +102,15 @@ class MongoStorage(BaseMetadataStorage):
             If retrieving the metadata fails or model not found
         """
         try:
-            result = self.collection.find_one({'_id': ObjectId(model_id)})
+            result = self.collection.find_one({"_id": ObjectId(model_id)})
             if not result:
                 logger.error(f"Metadata not found for ID: {model_id}")
                 raise RegistryError(f"Metadata not found: {model_id}")
-                
+
             # Convert ObjectId to string for JSON serialization
-            result['_id'] = str(result['_id'])
+            result["_id"] = str(result["_id"])
             return result
-            
+
         except Exception as e:
             logger.error(f"Failed to retrieve metadata: {str(e)}")
             raise RegistryError(f"Failed to retrieve metadata: {str(e)}")
