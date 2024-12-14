@@ -1,4 +1,5 @@
-
+import pickle
+import numpy as np
 
 def test_create_client_intance(get_host_url, get_client_lib):
     client = get_client_lib(get_host_url)
@@ -38,3 +39,34 @@ def test_download_model(get_host_url, get_client_lib, trained_model, model_metad
     assert downloaded_buffer, "Downloaded model buffer is not empty"
     assert model_metadata.name == download_model_metadata["name"]
 
+
+
+def test_model_prediction_consistency(get_host_url, get_client_lib, trained_model, model_metadata):
+    """Test if model predictions are consistent after upload and download"""
+    client = get_client_lib(get_host_url)
+    model_buffer,_, (X_test, y_test) = trained_model
+    
+    # Get original predictions
+    model_buffer.seek(0)
+    original_model = pickle.loads(model_buffer.read())
+    original_predictions = original_model.predict(X_test)
+    
+    # Reset buffer for upload
+    model_buffer.seek(0)
+    
+    # Upload model
+    result = client.upload_model(model_buffer, model_metadata)
+    
+    # Download model
+    downloaded_buffer, metadata = client.get_model(
+        file_path=result.file_path,
+        metadata_id=result.metadata_id
+    )
+    
+    # Load downloaded model and get predictions
+    downloaded_model = pickle.loads(downloaded_buffer.getvalue())
+    downloaded_predictions = downloaded_model.predict(X_test)
+    
+    # Compare predictions
+    assert np.array_equal(original_predictions, downloaded_predictions),"Predictions before and after storage should match"
+    
