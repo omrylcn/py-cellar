@@ -38,7 +38,7 @@ graph LR
 1. Start the services:
 
 ```bash
-docker-compose up -d
+make start # start all services(docker-compose file)
 ```
 
 2. Install the package:
@@ -69,18 +69,33 @@ response = client.upload_model(
 ## Project Structure
 
 ```
-model-registry/
-├── registry/
-│   ├── api.py           # FastAPI implementation
-│   ├── client.py        # Python client
-│   ├── config.py        # Configuration settings
-│   ├── registry.py      # Core registry logic
-│   ├── schema.py        # Data models
-│   └── storage/         # Storage implementations
-│       ├── base.py      # Storage interfaces
-│       ├── minio.py     # MinIO storage
-│       └── mongo.py     # MongoDB storage
-└── tests/               # Test suite
+registry
+├── api                         # API package for handling HTTP endpoints
+│   ├── __init__.py             
+│   └── routes                  # Routes directory
+│       └── models.py           # Model-related API endpoints
+├── app.py                      # Main FastAPI application entry point
+├── client.py                   # Client library for interacting with registry
+├── core                        # Core functionality package
+│   ├── config.py               # Configuration settings and environment variables
+│   ├── dependencies.py         # Dependency injection and shared resources
+│   └── registry.py             # Core registry implementation
+├── exceptions.py               # Custom exception definitions
+├── __init__.py                 
+├── logger.py                   # Logging configuration
+├── schemas.py                  # Pydantic models and data schemas
+├── services.py                 # Service layer implementations
+├── static                      # Static assets directory
+│   ├── css                     # CSS styles directory
+│   │   └── style.css           # Main stylesheet
+│   └── index.html              # Main HTML template
+├── storage                     # Storage implementations package
+│   ├── base.py                 # Abstract storage interface
+│   ├── minio.py                # MinIO storage implementation
+│   └── mongo.py                # MongoDB storage implementation
+├── util.py                     # Utility functions and helpers
+└── version.py                  # Version information```
+
 ```
 
 ## Configuration
@@ -88,10 +103,25 @@ model-registry/
 Set up using environment variables or `.env`:
 
 ```env
+# registry API
+REGISTRY_PORT=8000
+REGISTRY_MINIO_PORT=9004
+REGISTRY_MONGODB_PORT=27019
+
+# MongoDB Configuration
+MONGODB_PORT=27017
+MONGODB_ROOT_USERNAME=root
+MONGODB_ROOT_PASSWORD=root
+MONGODB_HOST=localhost
+MONGODB_URL=mongodb://root:root@localhost:27017
+MONGODB_DB=metadata
+
+# MinIO Configuration
+MINIO_PORT=9000
 MINIO_ENDPOINT=localhost:9000
 MINIO_ACCESS_KEY=minioadmin
 MINIO_SECRET_KEY=minioadmin
-MONGO_URI=mongodb://localhost:27017
+MINIO_BUCKET_NAME=models
 ```
 
 ## Development
