@@ -19,13 +19,13 @@ services:
       - MONGODB_ROOT_USERNAME=${MONGODB_ROOT_USERNAME}
       - MONGODB_ROOT_PASSWORD=${MONGODB_ROOT_PASSWORD}
     
-    command: ["uvicorn", "registry.api:app", "--host", "0.0.0.0","--reload"]
+    command: ["uvicorn", "registry.app:app", "--host", "0.0.0.0","--reload"]
     depends_on:
       - registry_mongodb
       - registry-minio
     networks:
       - registry_network
-      - mlops_network
+    #  - mlops_network  # to connect others docker compose files 
 
   registry_mongodb:
     image: mongo:6.0
@@ -63,5 +63,5 @@ volumes:
 networks:
     registry_network:
       driver: bridge
-    mlops_network:
-      external: true
+    # mlops_network:
+    #   external: true

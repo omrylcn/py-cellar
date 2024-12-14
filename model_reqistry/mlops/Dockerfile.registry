@@ -20,7 +20,7 @@ COPY ./config ./config
 
 EXPOSE 8000
 
-CMD ["uvicorn", "registry.api:app" ]
+CMD ["uvicorn", "registry.app:app" ]
 
 
 # FROM python:3.11.5
