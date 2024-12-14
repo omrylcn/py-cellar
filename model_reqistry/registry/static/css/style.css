@@ -1,0 +1,44 @@
+/* Add to your existing CSS */
+.features ul {
+    list-style: none;
+    padding: 0;
+}
+
+.features li {
+    background: #f8f9fa;
+    margin: 15px 0;
+    padding: 15px;
+    border-radius: 6px;
+    border-left: 4px solid #3498db;
+}
+
+.features li strong {
+    color: #2c3e50;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.features li p {
+    margin: 0;
+    color: #666;
+}
+
+.getting-started {
+    margin: 30px 0;
+    padding: 20px;
+    background: #f8f9fa;
+    border-radius: 8px;
+}
+
+.support {
+    margin-top: 30px;
+    padding: 20px;
+    background: #f1f8ff;
+    border-radius: 8px;
+    border: 1px solid #cce5ff;
+}
+
+.support p {
+    margin: 0;
+    color: #004085;
+}
