@@ -11,7 +11,7 @@ from pymongo import MongoClient
 from bson import ObjectId
 
 from .base import BaseMetadataStorage
-from ..config import settings
+from ..core.config import settings
 from ..exceptions import RegistryError
 
 logger = logging.getLogger(__name__)

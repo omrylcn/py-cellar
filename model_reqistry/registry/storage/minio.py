@@ -13,7 +13,7 @@ from minio.tagging import Tags
 from minio.error import MinioException, S3Error
 
 from .base import BaseStorage
-from ..config import settings
+from ..core.config import settings
 from ..exceptions import StorageError, ModelNotFoundError
 import urllib3
 logger = logging.getLogger(__name__)

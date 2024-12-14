@@ -3,7 +3,7 @@
 # from datetime import datetime
 import os
 import logging
-from .config import settings
+from .core.config import settings
 
 
 def create_logger() -> logging.Logger:

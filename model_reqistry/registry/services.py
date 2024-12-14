@@ -113,6 +113,8 @@ class ModelRegistry:
             self._cleanup_failed_registration(file_path, metadata["storage_group"])
             raise RegistryError(f"Failed to register model: {str(e)}")
 
+   
+
     def _cleanup_failed_registration(self, file_path: str, bucket: str) -> None:
         """Clean up resources after failed registration."""
         try:
@@ -120,41 +122,63 @@ class ModelRegistry:
         except Exception as e:
             logger.error(f"Cleanup after failed registration failed: {str(e)}")
 
-    def get_model(self, file_path: str, metadata_id: str, bucket_name: Optional[str] = None) -> Tuple[BinaryIO, Dict[str, Any]]:
+    
+    def get_model_file(self, file_path: str, bucket_name: Optional[str] = None) -> BinaryIO:
         """
-        Retrieve model and its metadata.
+        Retrieve a model file from storage.
 
         Parameters
         ----------
         file_path : str
-            Path to the model file
-        metadata_id : str
-            Metadata ID of the model
-        bucket_name : str, optional
-            Override storage bucket name
+            Path to the model file in storage
+        bucket_name : Optional[str]
+            Name of the storage bucket/group, by default None
 
         Returns
         -------
-        Tuple[BinaryIO, Dict[str, Any]]
-            Model file and its metadata
+        BinaryIO
+            Binary file object containing the model
 
         Raises
         ------
         RegistryError
-            If retrieval fails
+            If model retrieval fails
         """
         try:
-            # Get metadata first
-            metadata = self.metadata_storage.get_metadata(metadata_id)
+            model_file = self.model_storage.get_model(file_path, bucket_name)
 
-            # Use bucket from metadata if not specified
-            bucket = bucket_name or metadata.get("storage_group")
-
-            # Get model file
-            model_file = self.model_storage.get_model(file_path, bucket)
-
-            return model_file, metadata
+            return model_file
 
         except Exception as e:
             logger.error(f"Failed to retrieve model: {str(e)}")
             raise RegistryError(f"Failed to retrieve model: {str(e)}")
+
+
+
+
+    def get_metadata(self, metadata_id: str) -> Dict[str, Any]:
+        """
+        Retrieve metadata for a given metadata ID.
+        
+        Parameters
+        ----------
+        metadata_id : str
+            Metadata ID of the model
+
+        Returns
+        -------
+        Dict[str, Any]
+            Dictionary containing metadata
+
+        Raises
+        ------
+        RegistryError
+            If metadata retrieval fails
+        """
+        try:
+            return self.metadata_storage.get_metadata(metadata_id)
+        
+        except Exception as e:
+            logger.error(f"Failed to retrieve metadata: {str(e)}")
+            raise RegistryError(f"Failed to retrieve metadata: {str(e)}")
+

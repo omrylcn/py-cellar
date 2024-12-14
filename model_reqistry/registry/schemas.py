@@ -27,6 +27,8 @@ class ModelMetadata(BaseModel):
         Dictionary of model performance metrics
     parameters : dict, optional
         Dictionary of model parameters and hyperparameters
+    tags : dict, optional
+        Dictionary of tags for the model
     """
 
     id: str
