@@ -44,7 +44,11 @@ make start # start all services(docker-compose file)
 2. Install the package:
 
 ```bash
+# use pip
 pip install -r mlops/registry_requirements.txt
+
+# or use uv
+uv sync
 
 ```
 
