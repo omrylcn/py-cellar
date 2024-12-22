@@ -44,7 +44,8 @@ make start # start all services(docker-compose file)
 2. Install the package:
 
 ```bash
-pip install -e .
+pip install -r mlops/registry_requirements.txt
+
 ```
 
 3. Use the client:
