@@ -63,10 +63,8 @@ def test_model_prediction_consistency(get_host_url, get_client_lib, trained_mode
         metadata_id=result.metadata_id
     )
     
-    # Load downloaded model and get predictions
     downloaded_model = pickle.loads(downloaded_buffer.getvalue())
     downloaded_predictions = downloaded_model.predict(X_test)
     
-    # Compare predictions
     assert np.array_equal(original_predictions, downloaded_predictions),"Predictions before and after storage should match"
     
