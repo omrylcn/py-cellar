@@ -50,19 +50,30 @@ pip install -e .
 3. Use the client:
 
 ```python
-from registry.client import ModelRegistryClient
+# model upload example
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
 
-# Initialize client
-client = ModelRegistryClient()
+model = LogisticRegression()
+model.fit(X_train, y_train)
 
-# Register a model
-response = client.upload_model(
-    model_path="path/to/model.pkl",
-    name="my_model",
-    version="1.0.0",
-    description="My trained model",
-    metadata={metrics={"accuracy": 0.95}}
-)
+
+model_buffer = io.BytesIO()
+pickle.dump(model, model_buffer)
+model_buffer.seek(0)
+
+metadata = ModelMetadata(
+            id="model123",
+            name="example_model",
+            version="1.0.0",
+            file_extension="pkl",
+            storage_group="ml-models",
+            description="Example model",
+            framework="scikit-learn",
+            metrics={"accuracy": 0.95},
+            parameters={"n_estimators": 100},
+            tags={"type":"classification", "key":"example"}
+        )
+res = client.upload_model(model_buffer, metadata)
 
 ```
 
