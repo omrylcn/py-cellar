@@ -37,28 +37,29 @@ Right now, we're like a factory where you have to physically walk to each statio
 What We Need to Design:
 
 1. Central Management System:
+
 - Acts as the brain of the operation
 - Keeps track of all processes
 - Makes decisions about transitions
 - Maintains system health
 
 2. State Tracking System:
+
 - Records every important event
 - Maintains history
 - Enables auditing
 - Supports debugging
 
 3. Automation Framework:
+
 - Handles routine operations
 - Manages transitions
 - Validates processes
 - Responds to issues
 
 4. Monitoring and Alerting:
+
 - Tracks system health
 - Monitors performance
 - Alerts on issues
 - Provides insights
-
-
-
