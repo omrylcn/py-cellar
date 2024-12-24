@@ -1,0 +1,1 @@
+MODEL_PATH = "models/candy-8-optimized.onnx" #"models/candy-8.onnx"

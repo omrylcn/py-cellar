@@ -16,12 +16,14 @@ serving
 tp
 feature_store/my_project
 
-# fs
-fs/redis_feature_store
-fs/my_project
-fs/customer_purchase
-fs/credit_score
-fs/data
+# feature_store
+fs
+feature_store
+feature_store/redis_feature_store
+feature_store/my_project
+feature_store/customer_purchase
+feature_store/credit_score
+feature_store/data
 
 # batch_processing
 batch_processing/data-engineering-zoomcamp

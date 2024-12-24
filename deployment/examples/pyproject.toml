@@ -1,0 +1,14 @@
+[project]
+name = "examples"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115.6",
+    "onnx>=1.17.0",
+    "onnxruntime>=1.20.1",
+    "pillow>=11.0.0",
+    "python-multipart>=0.0.20",
+    "uvicorn>=0.34.0",
+]
