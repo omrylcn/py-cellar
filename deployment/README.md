@@ -30,6 +30,11 @@
 - [fastapi-microservice-demo](https://github.com/shantanu1905/fastapi-microservice-demo)
 - [katana-skipper](https://github.com/katanaml/katana-skipper)
 
+
+### Serving
+- [Machine learning model serving architectures](https://xebia.com/blog/ml-serving-architectures/)
+- [Machine Learning Model Serving Patterns and Best Practices](https://github.com/PacktPublishing/Machine-Learning-Model-Serving-Patterns-and-Best-Practices)
+
 ### Projects
 
 - [Realtime Data Streaming | End-to-End Data Engineering Project](https://github.com/airscholar/e2e-data-engineering/tree/main)

@@ -13,6 +13,13 @@
 
 - [Best practices for Terraform CI/CD](https://buildkite.com/resources/blog/best-practices-for-terraform-ci-cd/)
 
+
+- [Simple Model Retraining Automation via GitHub Actions](https://towardsdatascience.com/simple-model-retraining-automation-via-github-actions-b0f61d5c869c)
+
+- [Automate ML model retraining and deployment with MLflow in Databricks](https://towardsdatascience.com/automate-ml-model-retraining-and-deployment-with-mlflow-in-databricks-ad29f6146f80)
+
+- [Advanced MLOps Techniques with GitHub Actions](https://lo-victoria.com/advanced-mlops-techniques-with-github-actions)
+
 ## References 
 
 - image came from : https://www.qwak.com/post/ci-cd-pipelines-for-machine-learning
