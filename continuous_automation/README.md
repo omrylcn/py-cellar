@@ -20,6 +20,10 @@
 
 - [Advanced MLOps Techniques with GitHub Actions](https://lo-victoria.com/advanced-mlops-techniques-with-github-actions)
 
+### AWS - CI/CD
+- [How to Automate Terraform Deployments with AWS CodePipeline](https://achinthabandaranaike.medium.com/how-to-automate-terraform-deployments-with-aws-codepipeline-569044313b60)
+- [How to Deploy Infrastructure in CI/CD Using Terraform (Pipeline)](https://spacelift.io/blog/terraform-in-ci-cd)
+
 ## References 
 
 - image came from : https://www.qwak.com/post/ci-cd-pipelines-for-machine-learning
