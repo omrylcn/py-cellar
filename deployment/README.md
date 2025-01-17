@@ -35,7 +35,8 @@
 - [Machine learning model serving architectures](https://xebia.com/blog/ml-serving-architectures/)
 - [Machine Learning Model Serving Patterns and Best Practices](https://github.com/PacktPublishing/Machine-Learning-Model-Serving-Patterns-and-Best-Practices)
 - [Model serving architectures on Databricks](https://medium.com/marvelous-mlops/model-serving-architectures-on-databricks-700be679eb5c)
-- [ML serving 101: Core architectures](https://medium.com/decodingml/ml-serving-101-core-architectures-cf8cbb852aa8)
+- [ML serving 101: Core architectures](https://medium.com/decodingml/ml-serving-101-core-architectures-cf8cbb852aa8
+- [Machine Learning model serving tools comparison - KServe, Seldon Core, BentoML](https://getindata.com/blog/machine-learning-model-serving-tools-comaprison-kserve-seldon-core-bentoml/)
 
 ### Projects
 
