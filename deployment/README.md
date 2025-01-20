@@ -23,10 +23,15 @@
 - [How I build an ETL pipeline with AWS Glue, Lambda, and Terraform](https://blog.det.life/how-i-build-an-etl-pipeline-with-aws-glue-lambda-and-terraform-bbdf0788cc75)
 - [Terraform Template for SageMaker Projects - repo](https://github.com/aws-samples/mlops-terraform-template)
 - [Machine Learning Deployment in Docker and MLOps in AWS using Terraform - blog](https://medium.com/@farsim/machine-learning-deployment-in-docker-and-mlops-in-aws-using-terraform-6d526552f33f)
+- [How to Master DevOps with Python, Terraform, and Kubernetes on AWS](https://thelearningjourney.co/automating-the-cloud-the-evolution-of-a-python-app-with-docker-kubernetes-and-terraform/)
+- [MLOps SageMaker Terraform Integration](https://www.restack.io/p/mlops-answer-sagemaker-terraform-cat-ai)
+- [How to Deploy Infrastructure in CI/CD Using Terraform (Pipeline) - blog](https://spacelift.io/blog/terraform-in-ci-cd)
+- [Setting up AWS SageMaker with Terraform](https://www.zharconsulting.com/contents/ai/sage-maker/setting-up-aws-sage-maker-with-terraform/)
+- [Build Terraform CI/CD Pipelines using AWS CodePipeline](https://www.tecracer.com/blog/2023/05/build-terraform-ci/cd-pipelines-using-aws-codepipeline.html)
+
 ### Que and Microservices
 
 - [Deploy your ML Model with Celery, RabbitMQ and FastAPI](https://www.jitx.io/posts/ml-deployment)
-
 - [fastapi-microservice-demo](https://github.com/shantanu1905/fastapi-microservice-demo)
 - [katana-skipper](https://github.com/katanaml/katana-skipper)
 
