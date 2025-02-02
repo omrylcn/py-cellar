@@ -1,0 +1,21 @@
+[project]
+name = "mlapi"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "bentoml",
+    "light-embed>=1.0.7",
+    "numpy==1.26.4",
+    "onnxruntime==1.19.2",
+    "tokenizers==0.20.1",
+]
+
+[tool.uv]
+dev-dependencies = [
+    "jupyter>=1.1.1",
+    "onnx>=1.17.0",
+    "onnxruntime>=1.19.2",
+]
+
