@@ -9,6 +9,7 @@ dependencies = [
     "light-embed>=1.0.7",
     "numpy==1.26.4",
     "onnxruntime==1.19.2",
+    "pydantic>=2.10.6",
     "tokenizers==0.20.1",
 ]
 
