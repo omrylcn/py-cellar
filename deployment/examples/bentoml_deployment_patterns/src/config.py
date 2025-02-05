@@ -5,13 +5,15 @@ import os
 
 load_dotenv()
 
-CONFIG_YAML = os.getenv("CONFIG_YAML", "config.yaml")
+CONFIG_YAML = os.getenv("CONFIG_YAML", "config/config.yaml")
 
 
 class ModelConfig(BaseModel):
     model_name: str = "sentence-transformers/all-MiniLM-L6-v2"
     batch_size: int = 32
-
+    normalize: bool = False
+    onnx_file: str = "model.onnx"
+    
 class ServiceConfig(BaseModel):
     cpu:int = 2
     memory:str = "2Gi"

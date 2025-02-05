@@ -1,6 +1,8 @@
 from typing import Dict, List, Union, Optional
 import numpy as np
+from src.config import ModelConfig
 from light_embed import TextEmbedding
+
 
 class Embedder:
     """
@@ -31,7 +33,7 @@ class Embedder:
     >>> embeddings = embedder.predict(sentences)
     """
     
-    def __init__(self, model_config: Dict[str, Union[str, int]]) -> None:
+    def __init__(self, model_config:ModelConfig) -> None:
         """
         Initialize the Embedder with model configuration.
 
@@ -43,6 +45,10 @@ class Embedder:
         """
         self.config = model_config
         self.model: Optional[TextEmbedding] = None
+        self.model_config = {
+            "onnx_file": self.config.onnx_file,
+            "normalize": self.config.normalize
+        }
 
     def load(self) -> 'Embedder':
         """
@@ -60,12 +66,15 @@ class Embedder:
         ValueError
             If model loading fails
         """
-        if 'model_name' not in self.config:
+        
+        if 'model_name' not in self.config.model_dump().keys():
             raise KeyError("model_name must be specified in config")
             
         try:
+            
             self.model = TextEmbedding(
-                model_name_or_path=self.config["model_name"],
+                model_name_or_path=self.config.model_name,
+                model_config=self.model_config
             )
             return self
         except Exception as e:

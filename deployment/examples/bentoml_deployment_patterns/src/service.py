@@ -1,6 +1,6 @@
 import bentoml
-from config import load_config, Config
-from model import Embedder
+from src.config import load_config, Config
+from src.model import Embedder
 from typing import List, Dict, Any, Union
 import numpy as np
 
@@ -85,11 +85,12 @@ class Service:
         the module-level SERVICE_CONFIG object.
         """
         self.config = SERVICE_CONFIG
+        
         self.model = Embedder(self.config.model).load()
         self.batch_size = self.config.model.batch_size
 
     @bentoml.api
-    async def embed(self, sentences: List[str]) -> List[float]:
+    async def embed(self, sentences: List[str]) -> List[List[float]]:
         """
         Generate embeddings for multiple sentences with batched processing.
 
@@ -110,7 +111,7 @@ class Service:
             a list of floating-point numbers. The length of each vector
             matches the model's embedding dimension.
 
-        See Also
+        See 
         --------
         embed_single : Method for embedding a single sentence.
         
@@ -132,6 +133,7 @@ class Service:
         for i in range(0, len(sentences), self.batch_size):
             batch = sentences[i:i + self.batch_size]
             batch_embeddings = self.model.predict(batch)
+            print(batch_embeddings.shape)
             embeddings.extend(batch_embeddings.tolist())
         return embeddings
 
@@ -166,7 +168,12 @@ class Service:
         >>> print(len(embedding))  # Embedding dimension
         384  # Example dimension
         """
-        return self.model.predict([sentence])[0].tolist()
+        result = self.model.predict([sentence])
+        print(result.shape)
+        result = result[0]
+        print(result.shape)
+        return result.tolist()
+        
 
     @bentoml.api
     def get_model_info(self) -> Dict[str, Any]:
@@ -201,5 +208,5 @@ class Service:
             "model_type": self.model.__class__.__name__,
             "model_config": self.config.model,
             "service_config": self.config.service,
-            "embedding_dim": self.model.get_dimension()
+            "embedding_config": self.model.model.model_config
         }
