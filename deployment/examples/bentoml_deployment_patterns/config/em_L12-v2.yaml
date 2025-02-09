@@ -1,0 +1,23 @@
+# Configuration file for the model and service settings
+
+# Model configuration settings
+model:
+  # Name of the sentence transformer model to use
+  model_name: "models/all-MiniLM-L6-v2-onnx"
+  batch_size: 32 # model inference batch size
+  normalize: False
+  onnx_file: "model.onnx"
+
+
+# Service configuration settings
+service:
+  # Number of CPU cores allocated
+  cpu: 2
+  # Memory allocation for the service
+  memory: "2Gi"
+  # Request timeout in seconds
+  timeout: 30
+  # Health check interval in seconds
+  interval: 10
+  # Maximum number of concurrent requests
+  max_concurrency: 10
