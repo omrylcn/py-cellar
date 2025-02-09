@@ -18,5 +18,6 @@ dev-dependencies = [
     "jupyter>=1.1.1",
     "onnx>=1.17.0",
     "onnxruntime>=1.19.2",
+    "ruff>=0.9.5",
 ]
 

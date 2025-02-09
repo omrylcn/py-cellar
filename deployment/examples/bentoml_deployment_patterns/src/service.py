@@ -174,7 +174,8 @@ class Service:
         print(result.shape)
         return result.tolist()
         
-
+        
+    #TODO: add a method to get the model info with fastapi
     @bentoml.api
     def get_model_info(self) -> Dict[str, Any]:
         """

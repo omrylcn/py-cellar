@@ -5,7 +5,7 @@ import os
 
 load_dotenv()
 
-CONFIG_YAML = os.getenv("CONFIG_YAML", "config/config.yaml")
+CONFIG_YAML = os.getenv("CONFIG_YAML_PATH", "config/config.yaml")
 
 
 class ModelConfig(BaseModel):
