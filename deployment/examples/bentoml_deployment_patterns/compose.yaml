@@ -1,0 +1,79 @@
+services:
+  service-L6-v2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: service-L6-v2
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./models:/app/models
+      - ./config:/app/config
+    #ports:
+      # - "3000:3000"
+    environment:
+      - CONFIG_YAML_PATH=config/em_L6-v2.yaml
+      - BENTOML_HOST=0.0.0.0
+      - BENTOML_PORT=3000
+      - BENTOML_WORKERS=2
+      - BENTOML_BACKLOG=2048
+      - BENTOML_WORKING_DIR=/app
+    #   # CORS ayarları
+    #   - BENTOML_API_SERVER_CORS_ENABLE=true
+    #   - BENTOML_API_SERVER_CORS_ALLOW_ORIGINS=["*"]
+    #   # Logging ayarları
+      - BENTOML_API_SERVER_ACCESS_LOG_ENABLED=true
+    networks:
+      - ml_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/healthz" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  service-L12-v2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: service-L12-v2
+    volumes:
+      - ./data:/app/data
+      - ./logs:/app/logs
+      - ./models:/app/models
+      - ./config:/app/config
+    #ports:
+      # - "3000:3000"
+    environment:
+      - CONFIG_YAML_PATH=config/em_L12-v2.yaml
+      - BENTOML_HOST=0.0.0.0
+      - BENTOML_PORT=4000
+      - BENTOML_WORKERS=2
+      - BENTOML_BACKLOG=2048
+      - BENTOML_WORKING_DIR=/app
+    #   # CORS ayarları
+    #   - BENTOML_API_SERVER_CORS_ENABLE=true
+    #   - BENTOML_API_SERVER_CORS_ALLOW_ORIGINS=["*"]
+    #   # Logging ayarları
+      - BENTOML_API_SERVER_ACCESS_LOG_ENABLED=true
+    networks:
+      - ml_network
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:3000/healthz" ]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  
+  nginx:
+    image: nginx:alpine
+    container_name: nginx_proxy
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - model-a-service
+    networks:
+      - ml_network
+
+networks:
+  ml_network:
+    driver: bridge
