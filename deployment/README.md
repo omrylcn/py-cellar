@@ -1,6 +1,5 @@
 # Notes
 
-- [Model Deployment Strategies](https://neptune.ai/blog/model-deployment-strategies)
 - [ML Model Deployment Strategies](https://towardsdatascience.com/ml-model-deployment-strategies-72044b3c1410)
 - [Model Deployment Strategies - neptune blog](https://neptune.ai/blog/model-deployment-strategies)
 - [Understanding Deployment Patterns for Machine Learning Models](https://medium.com/@sahin.samia/understanding-deployment-patterns-for-machine-learning-models-06923caa9bc0)
@@ -37,6 +36,7 @@
 
 
 ### Serving
+
 - [Machine learning model serving architectures](https://xebia.com/blog/ml-serving-architectures/)
 - [Machine Learning Model Serving Patterns and Best Practices](https://github.com/PacktPublishing/Machine-Learning-Model-Serving-Patterns-and-Best-Practices)
 - [Model serving architectures on Databricks](https://medium.com/marvelous-mlops/model-serving-architectures-on-databricks-700be679eb5c)
