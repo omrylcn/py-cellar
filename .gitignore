@@ -1,7 +1,6 @@
 config.yaml
 ml_train
 py-cellar/.vscode
-web_sockets
 ml_api/support
 ml_api/api_template/ml/siglip-base-patch16-224.bin
 ml_api/api_template/ml/siglip-base-patch16-224.xml
@@ -15,6 +14,7 @@ mlops_notes
 serving
 tp
 feature_store/my_project
+prompts
 
 # feature_store
 fs

@@ -1,6 +1,6 @@
 # MLOPs & DataOPs Notes
 
-### MLOps: Operationalizing the Machine Learning Lifecycle 
+## MLOps: Operationalizing the Machine Learning Lifecycle 
 
 MLOps (Machine Learning Operations) is a set of practices and principles that aims to streamline the entire machine learning lifecycle, from development to deployment, monitoring, and maintenance. It emerged from organizations' need to bridge the critical gap between experimental machine learning models and production systems. While data scientists could create powerful models in their development environments, getting these models to work reliably in production presented unique challenges. MLOps addresses these challenges by combining machine learning, DevOps practices, and data engineering to ensure ML systems can be built, deployed, and maintained effectively.
 
