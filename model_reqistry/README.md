@@ -1,8 +1,19 @@
 # Model Registry
 
-A lightweight, extensible model registry for machine learning models. This registry provides storage and versioning for ML models with metadata management.
+A lightweight, extensible registry for managing machine learning models with efficient storage and comprehensive metadata tracking.
 
-## System Architecture
+## Overview
+
+This Model Registry provides a centralized system for storing, versioning, and retrieving machine learning models. It's designed for MLOps workflows and offers both a REST API and a Python client for seamless integration.
+
+## Architecture
+
+The system follows a layered architecture with:
+
+- **Client Layer**: Python client for easy integration
+- **API Layer**: FastAPI endpoints for model operations
+- **Service Layer**: Core registry logic
+- **Storage Layer**: Dual storage with MinIO (model files) and MongoDB (metadata)
 
 ```mermaid
 graph LR
@@ -27,133 +38,146 @@ graph LR
 
 ## Features
 
-- 📦 Model artifact storage using MinIO
-- 📝 Metadata management with MongoDB
-- 🔄 Version tracking
-- 🔍 Model search and retrieval
-- 🧰 Easy-to-use Python client
+- **Model Storage**: Securely store model binary files using MinIO
+- **Metadata Management**: Track model details, parameters, and metrics
+- **Version Control**: Manage multiple versions of the same model
+- **Streaming Support**: Efficient handling of large model files
+- **Tagging System**: Add custom tags to models for better organization
+- **Python Client**: Simple client with built-in error handling
+- **REST API**: Complete API for model operations
 
-## Quick Start
+## Getting Started
 
-1. Start the services:
+### 1. Start the Services
 
 ```bash
-make start # start all services(docker-compose file)
+# Start all services using Docker Compose
+make start
 ```
 
-2. Install the package:
+### 2. Install Dependencies
 
 ```bash
-# use pip
+# Using pip
 pip install -r mlops/registry_requirements.txt
 
-# or use uv
+# Or using uv
 uv sync
-
 ```
 
-3. Use the client:
+### 3. Upload a Model
 
 ```python
-# model upload example
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=42)
+from registry.client import ModelRegistryClient
+from registry.schemas import ModelMetadata
+import io
+import pickle
+from sklearn.linear_model import LogisticRegression
 
+# Train a simple model
 model = LogisticRegression()
 model.fit(X_train, y_train)
 
-
+# Serialize the model
 model_buffer = io.BytesIO()
 pickle.dump(model, model_buffer)
 model_buffer.seek(0)
 
+# Create client and upload
+client = ModelRegistryClient("http://localhost:8000")
 metadata = ModelMetadata(
-            id="model123",
-            name="example_model",
-            version="1.0.0",
-            file_extension="pkl",
-            storage_group="ml-models",
-            description="Example model",
-            framework="scikit-learn",
-            metrics={"accuracy": 0.95},
-            parameters={"n_estimators": 100},
-            tags={"type":"classification", "key":"example"}
-        )
-res = client.upload_model(model_buffer, metadata)
+    id="model123",
+    name="example_model",
+    version="1.0.0",
+    file_extension="pkl",
+    storage_group="ml-models",
+    description="Example model",
+    framework="scikit-learn",
+    metrics={"accuracy": 0.95},
+    parameters={"n_estimators": 100},
+    tags={"type": "classification"}
+)
 
+response = client.upload_model(model_buffer, metadata)
+print(f"Model uploaded with ID: {response.metadata_id}")
 ```
 
-## Project Structure
+### 4. Retrieve a Model
 
-```
-registry
-├── api                         # API package for handling HTTP endpoints
-│   ├── __init__.py             
-│   └── routes                  # Routes directory
-│       └── models.py           # Model-related API endpoints
-├── app.py                      # Main FastAPI application entry point
-├── client.py                   # Client library for interacting with registry
-├── core                        # Core functionality package
-│   ├── config.py               # Configuration settings and environment variables
-│   ├── dependencies.py         # Dependency injection and shared resources
-│   └── registry.py             # Core registry implementation
-├── exceptions.py               # Custom exception definitions
-├── __init__.py                 
-├── logger.py                   # Logging configuration
-├── schemas.py                  # Pydantic models and data schemas
-├── services.py                 # Service layer implementations
-├── static                      # Static assets directory
-│   ├── css                     # CSS styles directory
-│   │   └── style.css           # Main stylesheet
-│   └── index.html              # Main HTML template
-├── storage                     # Storage implementations package
-│   ├── base.py                 # Abstract storage interface
-│   ├── minio.py                # MinIO storage implementation
-│   └── mongo.py                # MongoDB storage implementation
-├── util.py                     # Utility functions and helpers
-└── version.py                  # Version information```
+```python
+# Get model metadata
+metadata = client.get_metadata("metadata_id")
 
+# Download model file
+model_buffer, metadata = client.get_model(
+    file_path=metadata["storage_path"],
+    metadata_id=metadata["_id"],
+    bucket_name=metadata["storage_group"]
+)
+
+# Load the model
+model = pickle.load(model_buffer)
 ```
 
 ## Configuration
 
-Set up using environment variables or `.env`:
+The registry can be configured through environment variables or a `.env` file:
 
 ```env
-# registry API
+# API Configuration
 REGISTRY_PORT=8000
-REGISTRY_MINIO_PORT=9004
-REGISTRY_MONGODB_PORT=27019
 
 # MongoDB Configuration
-MONGODB_PORT=27017
-MONGODB_ROOT_USERNAME=root
-MONGODB_ROOT_PASSWORD=root
-MONGODB_HOST=localhost
 MONGODB_URL=mongodb://root:root@localhost:27017
 MONGODB_DB=metadata
 
 # MinIO Configuration
-MINIO_PORT=9000
 MINIO_ENDPOINT=localhost:9000
 MINIO_ACCESS_KEY=minioadmin
 MINIO_SECRET_KEY=minioadmin
-MINIO_BUCKET_NAME=models
+MINIO_BUCKET=models
 ```
 
 ## Development
 
-Run tests:
-
 ```bash
+# Run tests
 pytest
+
+# Format code
+make format
+
+# Lint code
+make lint
+
+# Clean Python cache files
+make clean-file
+```
+
+## Directory Structure
+
+```
+registry/
+├── api/                  # API endpoints
+├── core/                 # Core registry configuration
+├── storage/              # Storage implementations
+│   ├── base.py           # Abstract interfaces
+│   ├── minio.py          # MinIO implementation
+│   └── mongo.py          # MongoDB implementation
+├── app.py                # Main FastAPI application
+├── client.py             # Python client
+├── exceptions.py         # Error handling
+├── schemas.py            # Data models
+└── services.py           # Service layer
 ```
 
 ## Future Improvements
 
-- [ ] Add authentication
-- [ ] Add model validation
-- [ ] Add metrics visualization
-- [ ] Support more storage backends
+- Authentication and authorization
+- Model validation hooks
+- Web UI for model management
+- Support for additional storage backends
+- Model lineage tracking
 
 ## License
 

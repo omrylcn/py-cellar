@@ -1,7 +1,7 @@
 [project]
-name = "model-reqistry"
+name = "model-registry"  # Fixed typo in name
 version = "0.1.0"
-description = "Add your description here"
+description = "Lightweight, extensible registry for machine learning models"  # Added better description
 readme = "README.md"
 requires-python = ">=3.11"
 
@@ -32,7 +32,6 @@ dev-dependencies = [
     "scikit-learn>=1.5.2",
     "xgboost>=2.1.2",
 ]
-
 
 [tool.ruff]
 line-length = 100
