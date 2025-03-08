@@ -1,0 +1,8 @@
+fastapi>=0.95.0
+uvicorn>=0.21.1
+broadcaster>=0.2.0
+redis>=4.5.4
+pydantic>=1.10.7
+starlette>=0.26.1
+asyncio>=3.4.3
+websockets>=11.0.3
