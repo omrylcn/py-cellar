@@ -11,3 +11,6 @@
 ## RedPanda
 
 - [Stream processing in Python with Redpanda and Quix](https://redpanda-data.medium.com/stream-processing-in-python-with-redpanda-and-quix-aba90f89ba8c)
+
+
+## WebSocket
